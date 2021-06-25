@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+derby.log
+evento/db.lck
+evento/log/log.ctrl
+evento/db.lck
+*.dat
+evento/log/logmirror.ctrl

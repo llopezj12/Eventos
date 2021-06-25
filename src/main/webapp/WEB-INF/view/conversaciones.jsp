@@ -5,10 +5,9 @@
 --%>
 
 <%@page import="java.util.List"%>
-<%@page import="app.eventostaw.dao.UsuarioFacade"%>
-<%@page import="app.eventostaw.entity.Mensaje"%>
-<%@page import="app.eventostaw.entity.Conversacion"%>
-<%@page import="app.eventostaw.entity.Usuario"%>
+<%@ page import="app.eventostaw.entity.Usuario" %>
+<%@ page import="app.eventostaw.entity.Conversacion" %>
+<%@ page import="app.eventostaw.entity.Mensaje" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,10 +20,10 @@
         Usuario user = (Usuario) session.getAttribute("usuario");
 
     %>
-
+    <body>
     <table border="1">
         <thead>
-        <body>
+
 
         <tr>
 
@@ -36,33 +35,36 @@
         </tr>
     </thead>
     <tbody>
-        <%                for (Conversacion conversacion : user.getConversacionList1()) {
+        <%                for (Conversacion conversacion : user.get) {
                 Usuario sbeve = new Usuario();
-                if (conversacion.getIdUsuario1().getIdUsuario()==user.getIdUsuario())
+                if (conversacion.getUsuarioByIdUsuario1().getIdUsuario()==user.getIdUsuario())
                 {
-                    sbeve = conversacion.getIdUsuario2();
+                    sbeve = conversacion.getUsuarioByIdUsuario2();
                 }
                 else {
-                    sbeve = conversacion.getIdUsuario1();
+                    sbeve = conversacion.getUsuarioByIdUsuario2();
                 }
                 String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
         <tr>
             <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
-            <td><%=sbeve.getRol().getDescripcion()%></td>
+            <td><%=sbeve.getR.getDescripcion()%></td>
             <%
-                if (conversacion.getMensajeList().isEmpty()) {
+                if (conversacion.getMensajesByIdConversacion().isEmpty()) {
 
             %>
             <td>no hay mensajes</td>
             <td></td>
             <td></td>
             <%                } else {
-                Mensaje ultimomensaje = conversacion.getMensajeList().get(conversacion.getMensajeList().size() - 1);
+
+                List<Mensaje> lm = (List<Mensaje>) conversacion.getMensajesByIdConversacion();
+                Mensaje ultimomensaje = lm.get(lm.size() - 1);
+
                 String horayminuto = ultimomensaje.getHora() + ":" + ultimomensaje.getMinuto();
             %>
             <td><%=ultimomensaje.getMensaje()%></td>
-            <td><%=ultimomensaje.getIdUsuario().getNombre()%></td>
+            <td><%=ultimomensaje.getUsuarioByIdUsuario().getNombre()%></td>
             <td><%=horayminuto%></td>
             <%
                 }
@@ -70,32 +72,33 @@
         </tr>
         <%
             }
-            for (Conversacion conversacion : user.getConversacionList()) {
+            for (Conversacion conversacion : user.getConversacionsByIdUsuario()) {
                 Usuario sbeve = new Usuario();
-                if (conversacion.getIdUsuario1().getIdUsuario()==user.getIdUsuario())
+                if (conversacion.getIdUsuario1()==user.getIdUsuario())
                 {
-                    sbeve = conversacion.getIdUsuario2();
+                    sbeve = conversacion.getUsuarioByIdUsuario2();
                 }
                 else {
-                    sbeve = conversacion.getIdUsuario1();
+                    sbeve = conversacion.getUsuarioByIdUsuario2();
                 }
                 String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
         <tr>
             <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
-            <td><%=sbeve.getRol().getDescripcion()%></td>
-            <% if (conversacion.getMensajeList().isEmpty()) {
+            <td><%=sbeve.getRolesByRol().getDescripcion()%></td>
+            <% if (conversacion.getMensajesByIdConversacion().isEmpty()) {
             %>
             <td>no hay mensajes</td>
             <td></td>
             <td></td>
             <%
             } else {
-                Mensaje ultimomensaje = conversacion.getMensajeList().get(conversacion.getMensajeList().size() - 1);
+                List<Mensaje> lm = (List<Mensaje>) conversacion.getMensajesByIdConversacion();
+                Mensaje ultimomensaje = lm.get(lm.size() - 1);
                 String horayminuto = ultimomensaje.getHora() + ":" + ultimomensaje.getMinuto();
             %>
             <td><%=ultimomensaje.getMensaje()%></td>
-            <td><%=ultimomensaje.getIdUsuario().getNombre()%></td>
+            <td><%=ultimomensaje.getUsuarioByIdUsuario().getNombre()%></td>
             <td><%=horayminuto%></td>
             <%
                 }
@@ -118,7 +121,7 @@
     } }
 %>
 
-<%            if (user.getRol().getIdRol() == 4 || user.getRol().getIdRol() == 2) {
+<%            if (user.getRol() == 4 || user.getRol() == 2) {
 %>
 <form action="ServletMenuConversaciones">
     <input type="hidden" value="" name="busqueda">

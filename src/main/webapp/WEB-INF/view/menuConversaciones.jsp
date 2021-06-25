@@ -4,10 +4,12 @@
     Author     : Ivanchu
 --%>
 
-<%@page import="app.eventostaw.entity.Usuario"%>
-<%@page import="app.eventostaw.entity.Mensaje"%>
+
 <%@page import="java.util.List"%>
-<%@page import="app.eventostaw.entity.Conversacion"%>
+<%@ page import="app.eventostaw.entity.Conversacion" %>
+<%@ page import="app.eventostaw.entity.Mensaje" %>
+<%@ page import="app.eventostaw.entity.Usuario" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -24,7 +26,7 @@
                 if (b==null) {b="";}
                 %>
                 
-            <label for="nombre">Busqueda: </label><input type="text" maxlength="20" size="25" name="busqueda" value="<%=b%>">
+            <label> <!--for="nombre" -->Busqueda: </label><input type="text" maxlength="20" size="25" name="busqueda" value="<%=b%>">
             <input type="submit" value="Buscar">
         </form>
         <table border="1" style="width:100%">
@@ -44,27 +46,29 @@
                 
                 for (Conversacion c : lista)
                 {
-                    String nombrecompleto1 = c.getIdUsuario1().getNombre() + " " + c.getIdUsuario1().getApellidos();
-                    String nombrecompleto2 = c.getIdUsuario2().getNombre() + " " + c.getIdUsuario2().getApellidos();
+                    String nombrecompleto1 = c.getUsuarioByIdUsuario1().getNombre() + " " + c.getUsuarioByIdUsuario1().getApellidos();
+                    String nombrecompleto2 = c.getUsuarioByIdUsuario2().getNombre() + " " + c.getUsuarioByIdUsuario2().getApellidos();
             %>
             <tr>
                 <td><%= nombrecompleto1 %></td>
-                <td><%= c.getIdUsuario1().getRol().getDescripcion() %></td>
+                <td><%= c.getUsuarioByIdUsuario1().getRolesByRol().getDescripcion() %></td>
                 <td><%= nombrecompleto2 %></td>
-                <td><%= c.getIdUsuario2().getRol().getDescripcion() %></td>
+                <td><%= c.getUsuarioByIdUsuario2().getRolesByRol().getDescripcion() %></td>
                 <%
-                if (c.getMensajeList().isEmpty()) {
+                if (c.getMensajesByIdConversacion().isEmpty()) {
 
             %>
             <td>no hay mensajes</td>
             <td></td>
             <td></td>
             <%                } else {
-                Mensaje ultimomensaje = c.getMensajeList().get(c.getMensajeList().size() - 1);
+                List<Mensaje> lm = (List<Mensaje>) c.getMensajesByIdConversacion();
+                Mensaje ultimomensaje = lm.get(lm.size() - 1);
                 String horayminuto = ultimomensaje.getHora() + ":" + ultimomensaje.getMinuto();
+
             %>
             <td><%=ultimomensaje.getMensaje()%></td>
-            <td><%=ultimomensaje.getIdUsuario().getNombre()%></td>
+            <td><%=ultimomensaje.getUsuarioByIdUsuario().getNombre()%></td>
             <td><%=horayminuto%></td>
             <%
                 }
@@ -88,7 +92,7 @@
             List<Usuario> listaUsuario = (List<Usuario>)session.getAttribute("listaUsuario");
             for (Usuario u : listaUsuario)
             {
-                if (u.getRol().getIdRol() == 1 || u.getRol().getIdRol()== 3)
+                if (u.getRolesByRol().getIdRol() == 1 || u.getRolesByRol().getIdRol()== 3)
                 {
             %>
             

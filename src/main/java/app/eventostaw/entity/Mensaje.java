@@ -1,9 +1,6 @@
 package app.eventostaw.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
@@ -16,39 +13,30 @@ public class Mensaje {
     private Integer minuto;
     private String mensaje;
     private Date fecha;
+    private Conversacion conversacionByIdConversacion;
+    private Usuario usuarioByIdUsuario;
 
     @Id
-    @Column(name = "ID_MENSAJE")
+    @Column(name = "ID_MENSAJE", nullable = false)
     public int getIdMensaje() {
         return idMensaje;
+    }
+
+    public void setIdMensaje(Integer idMensaje) {
+        this.idMensaje = idMensaje;
     }
 
     public void setIdMensaje(int idMensaje) {
         this.idMensaje = idMensaje;
     }
 
-    @Basic
-    @Column(name = "ID_CONVERSACION")
-    public Integer getIdConversacion() {
-        return idConversacion;
-    }
 
     public void setIdConversacion(Integer idConversacion) {
         this.idConversacion = idConversacion;
     }
 
     @Basic
-    @Column(name = "ID_USUARIO")
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    @Basic
-    @Column(name = "HORA")
+    @Column(name = "HORA", nullable = true)
     public Integer getHora() {
         return hora;
     }
@@ -58,7 +46,7 @@ public class Mensaje {
     }
 
     @Basic
-    @Column(name = "MINUTO")
+    @Column(name = "MINUTO", nullable = true)
     public Integer getMinuto() {
         return minuto;
     }
@@ -68,7 +56,7 @@ public class Mensaje {
     }
 
     @Basic
-    @Column(name = "MENSAJE")
+    @Column(name = "MENSAJE", nullable = true, length = 1000)
     public String getMensaje() {
         return mensaje;
     }
@@ -78,7 +66,7 @@ public class Mensaje {
     }
 
     @Basic
-    @Column(name = "FECHA")
+    @Column(name = "FECHA", nullable = true)
     public Date getFecha() {
         return fecha;
     }
@@ -98,5 +86,25 @@ public class Mensaje {
     @Override
     public int hashCode() {
         return Objects.hash(idMensaje, idConversacion, idUsuario, hora, minuto, mensaje, fecha);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ID_CONVERSACION", referencedColumnName = "ID_CONVERSACION")
+    public Conversacion getConversacionByIdConversacion() {
+        return conversacionByIdConversacion;
+    }
+
+    public void setConversacionByIdConversacion(Conversacion conversacionByIdConversacion) {
+        this.conversacionByIdConversacion = conversacionByIdConversacion;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", nullable = false)
+    public Usuario getUsuarioByIdUsuario() {
+        return usuarioByIdUsuario;
+    }
+
+    public void setUsuarioByIdUsuario(Usuario usuarioByIdUsuario) {
+        this.usuarioByIdUsuario = usuarioByIdUsuario;
     }
 }

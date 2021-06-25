@@ -5,9 +5,10 @@
 --%>
 
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="app.eventostaw.entity.Mensaje"%>
-<%@page import="app.eventostaw.entity.Conversacion"%>
-<%@page import="app.eventostaw.entity.Usuario"%>
+<%@ page import="app.eventostaw.entity.Usuario" %>
+<%@ page import="app.eventostaw.entity.Conversacion" %>
+<%@ page import="app.eventostaw.entity.Mensaje" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,18 +19,19 @@
     <%
         Usuario user = (Usuario) session.getAttribute("usuario");
         Conversacion conv = (Conversacion) request.getAttribute("conversacion");
+
     %>    
     <body>
         <table width="500">
             <tbody>
 
                 <%
-                    for (Mensaje m : conv.getMensajeList()) {
+                    for (Mensaje m : conv.getMensajesByIdConversacion()) {
 
                 %>
                 <tr>
                     <%                    String horayminuto = m.getHora() + ":" + m.getMinuto();
-                        if (m.getIdUsuario().getIdUsuario() == user.getIdUsuario()) {
+                        if (m.getUsuarioByIdUsuario().getIdUsuario() == user.getIdUsuario()) {
                     %>
 
                     <td align ="right"><%=m.getMensaje()%></td>
