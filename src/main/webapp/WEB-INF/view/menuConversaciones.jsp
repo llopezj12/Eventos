@@ -92,7 +92,7 @@
             List<Usuario> listaUsuario = (List<Usuario>)session.getAttribute("listaUsuario");
             for (Usuario u : listaUsuario)
             {
-                if (u.getRol() == 1 || u.getRol()== 3)
+                if (u.getRolesByRol().getIdRol() == 1 || u.getRolesByRol().getIdRol()== 3)
                 {
             %>
             
