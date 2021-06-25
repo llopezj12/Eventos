@@ -1,12 +1,12 @@
-<%-- 
+<%@ page import="app.eventostaw.entity.Conversacion" %>
+<%@ page import="app.eventostaw.entity.Usuario" %>
+<%@ page import="app.eventostaw.entity.Mensaje" %><%--
     Document   : TeleopConversacion
     Created on : May 14, 2021, 7:07:06 PM
     Author     : Ivanchu
 --%>
 
-<%@page import="app.eventostaw.entity.Mensaje"%>
-<%@page import="app.eventostaw.entity.Conversacion"%>
-<%@page import="app.eventostaw.entity.Usuario"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -20,17 +20,17 @@
     %>    
     <body>
         <table border="1" width="500">
-            <th><%=conv.getIdUsuario1().getNombre() %></th>
-            <th><%=conv.getIdUsuario2().getNombre() %></th>
+            <th><%=conv.getUsuarioByIdUsuario1().getNombre() %></th>
+            <th><%=conv.getUsuarioByIdUsuario2().getNombre() %></th>
             <th>Hora</th>
                 <%
-                    for (Mensaje m : conv.getMensajeList()) {
+                    for (Mensaje m : conv.getMensajesByIdConversacion()) {
 
                 %>
                 <tr>
                     <%                    
                         String horayminuto = m.getHora() + ":" + m.getMinuto();
-                        if (m.getIdUsuario().getIdUsuario() == conv.getIdUsuario1().getIdUsuario()) {
+                        if (m.getUsuarioByIdUsuario().getIdUsuario() == conv.getUsuarioByIdUsuario1().getIdUsuario()) {
                     %>
 
                     <td align="center"><%=m.getMensaje()%></td>

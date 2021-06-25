@@ -1,10 +1,8 @@
 package app.eventostaw.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -18,7 +16,9 @@ public class Usuario {
     private Date nacimiento;
     private String genero;
     private String email;
-    private Integer rol;
+    private Roles rolesByRol;
+    private Collection<Conversacion> conversacionsByIdUsuario;
+    private Collection<Conversacion> conversacionsByIdUsuario_0;
 
     @Id
     @Column(name = "ID_USUARIO", nullable = false)
@@ -114,26 +114,44 @@ public class Usuario {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "ROL")
-    public Integer getRol() {
-        return rol;
-    }
-
-    public void setRol(Integer rol) {
-        this.rol = rol;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return idUsuario == usuario.idUsuario && Objects.equals(nombre, usuario.nombre) && Objects.equals(apellidos, usuario.apellidos) && Objects.equals(password, usuario.password) && Objects.equals(domicilio, usuario.domicilio) && Objects.equals(ciudad, usuario.ciudad) && Objects.equals(nacimiento, usuario.nacimiento) && Objects.equals(genero, usuario.genero) && Objects.equals(email, usuario.email) && Objects.equals(rol, usuario.rol);
+        return idUsuario == usuario.idUsuario && Objects.equals(nombre, usuario.nombre) && Objects.equals(apellidos, usuario.apellidos) && Objects.equals(password, usuario.password) && Objects.equals(domicilio, usuario.domicilio) && Objects.equals(ciudad, usuario.ciudad) && Objects.equals(nacimiento, usuario.nacimiento) && Objects.equals(genero, usuario.genero) && Objects.equals(email, usuario.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsuario, nombre, apellidos, password, domicilio, ciudad, nacimiento, genero, email, rol);
+        return Objects.hash(idUsuario, nombre, apellidos, password, domicilio, ciudad, nacimiento, genero, email);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ROL", referencedColumnName = "ID_ROL")
+    public Roles getRolesByRol() {
+        return rolesByRol;
+    }
+
+    public void setRolesByRol(Roles rolesByRol) {
+        this.rolesByRol = rolesByRol;
+    }
+
+    @OneToMany(mappedBy = "usuarioByIdUsuario1")
+    public Collection<Conversacion> getConversacionsByIdUsuario() {
+        return conversacionsByIdUsuario;
+    }
+
+    public void setConversacionsByIdUsuario(Collection<Conversacion> conversacionsByIdUsuario) {
+        this.conversacionsByIdUsuario = conversacionsByIdUsuario;
+    }
+
+    @OneToMany(mappedBy = "usuarioByIdUsuario2")
+    public Collection<Conversacion> getConversacionsByIdUsuario_0() {
+        return conversacionsByIdUsuario_0;
+    }
+
+    public void setConversacionsByIdUsuario_0(Collection<Conversacion> conversacionsByIdUsuario_0) {
+        this.conversacionsByIdUsuario_0 = conversacionsByIdUsuario_0;
     }
 }
