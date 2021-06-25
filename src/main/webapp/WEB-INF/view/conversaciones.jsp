@@ -17,7 +17,8 @@
     </head>
     <%
 
-        Usuario user = (Usuario) session.getAttribute("usuario");
+        Usuario user = (Usuario) request.getAttribute("usuario");
+        //Usuario user = (Usuario) session.getAttribute("usuario");
 
     %>
     <body>
@@ -35,7 +36,8 @@
         </tr>
     </thead>
     <tbody>
-        <%                for (Conversacion conversacion : user.get) {
+        <%
+                for (Conversacion conversacion : user.getConversacionsByIdUsuario()) {
                 Usuario sbeve = new Usuario();
                 if (conversacion.getUsuarioByIdUsuario1().getIdUsuario()==user.getIdUsuario())
                 {
@@ -48,7 +50,7 @@
         %>            
         <tr>
             <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
-            <td><%=sbeve.getR.getDescripcion()%></td>
+            <td><%=sbeve.getRolesByRol().getDescripcion()%></td>
             <%
                 if (conversacion.getMensajesByIdConversacion().isEmpty()) {
 
@@ -74,7 +76,7 @@
             }
             for (Conversacion conversacion : user.getConversacionsByIdUsuario()) {
                 Usuario sbeve = new Usuario();
-                if (conversacion.getIdUsuario1()==user.getIdUsuario())
+                if (conversacion.getUsuarioByIdUsuario1().getIdUsuario()==user.getIdUsuario())
                 {
                     sbeve = conversacion.getUsuarioByIdUsuario2();
                 }
@@ -121,7 +123,7 @@
     } }
 %>
 
-<%            if (user.getRol() == 4 || user.getRol() == 2) {
+<%            if (user.getRolesByRol().getIdRol() == 4 || user.getRolesByRol().getIdRol()== 2) {
 %>
 <form action="ServletMenuConversaciones">
     <input type="hidden" value="" name="busqueda">
