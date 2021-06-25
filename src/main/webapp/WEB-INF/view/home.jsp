@@ -29,33 +29,38 @@
 <ul>
   <li><a class="active" href="/">Eventos disponibles</a></li>
   <% if (user == null) { %>
-  <li><a href="login.jsp">Identificarse</a></li>
-  <li><a href="registro.jsp">Registro</a></li>
+  <li><a href="/login">Identificarse</a></li>
+  <li><a href="registro">Registro</a></li>
   <% } %>
   <% if (user != null) { %>
   <li><a href="ServletConversaciones">Ticket de ayuda</a></li>
-  <!--<li style="float:right"><a href="about.asp">Mi cuenta</a></li>-->
+  <li style="float:right"><a href="/cerrarsesion">Cerrar Sesión</a></li>
   <% } %>
 </ul>
 <h1>Echa un vistazo a los eventos disponibles.</h1>
-<% if (eventosList.isEmpty()) { %>
-<div>Vaya, parece que esto está vacío.</div>
-<% } else { %>
-<div class="wrapper">
-  <% for (Evento e : eventosList) {%>
-  <div class="box <%=e.getIdEvento()%>">
-    <h3><%=e.getTitulo()%></h3>
-    <div><%=e.getDescripcion()%></div>
-    <%if (e.getAsientosfijos().compareTo("S") == 0) {%>
-    <div><%=e.getNumasientosporfila()%> asientos x <%=e.getNumfilas()%> filas.</div>
+<div style="margin-inline: 200px">
+  <% if (eventosList.isEmpty()) { %>
+  <div>Vaya, parece que esto está vacío.</div>
+  <% } else { %>
+  <div class="wrapper">
+    <% for (Evento e : eventosList) {%>
+    <div class="box <%=e.getIdEvento()%>">
+      <h3 style="margin-top:0px"><%=e.getTitulo()%></h3>
+      <div><%=e.getDescripcion()%></div>
+      <%if (e.getAsientosfijos().compareTo("S") == 0) {%>
+      <div><%=e.getNumasientosporfila()%> asientos x <%=e.getNumfilas()%> filas.</div>
+      <% } %>
+      <div><%=e.getEntradas()%> entradas disponibles. Aforo de <%=e.getAforo()%> personas.</div>
+      <div>Precio: <%=e.getCoste()%> euros.</div>
+      <div>Se celebra: <%=df.format(e.getFecha())%>.</div>
+      <div>Caduca: <%=df.format(e.getFechares())%>.</div>
+      <%if (user != null) {%>
+        <div style="margin-left: 30px; margin-top: 30px"><a class="button4" href="InscribirseEvento?=<%=e.getIdEvento()%>">Inscribete</a></div>
+      <% } %>
+    </div>
     <% } %>
-    <div><%=e.getEntradas()%> entradas disponibles. Aforo de <%=e.getAforo()%> personas.</div>
-    <div>Precio: <%=e.getCoste()%> euros.</div>
-    <div>Se celebra: <%=e.getFecha()%> euros.</div>
-    <div>Caduca: <%=e.getFechares()%> euros.</div>
   </div>
-  <% } %>
-</div>
 <% } %>
+</div>
 </body>
 </html>

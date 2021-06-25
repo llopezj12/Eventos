@@ -24,8 +24,8 @@
         }
     %>
         <ul>
-            <li><a  href="inicio.jsp">Inicio</a></li>
-            <li><a class="active" href="login.jsp">Identificarse</a></li>
+            <li><a  href="/">Inicio</a></li>
+            <li><a class="active" href="/login">Identificarse</a></li>
             <li><a href="registro.jsp">Registro</a></li>
         </ul>
 
@@ -50,7 +50,7 @@
             }
         %>
         <div class="form">
-            <form action="ServletLogin">
+            <form action="/trylogin">
                 <div class="block">
                     <label for="Correo">Correo</label><input type="text" id="Correo" name="correo" value="<%=email%>"><br>
                 </div>
