@@ -1,9 +1,7 @@
 package app.eventostaw.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -11,11 +9,18 @@ public class Conversacion {
     private int idConversacion;
     private int idUsuario1;
     private int idUsuario2;
+    private Usuario usuarioByIdUsuario1;
+    private Usuario usuarioByIdUsuario2;
+    private Collection<Mensaje> mensajesByIdConversacion;
 
     @Id
-    @Column(name = "ID_CONVERSACION")
+    @Column(name = "ID_CONVERSACION", nullable = false)
     public int getIdConversacion() {
         return idConversacion;
+    }
+
+    public void setIdConversacion(Integer idConversacion) {
+        this.idConversacion = idConversacion;
     }
 
     public void setIdConversacion(int idConversacion) {
@@ -23,9 +28,13 @@ public class Conversacion {
     }
 
     @Basic
-    @Column(name = "ID_USUARIO1")
+    @Column(name = "ID_USUARIO1", nullable = false)
     public int getIdUsuario1() {
         return idUsuario1;
+    }
+
+    public void setIdUsuario1(Integer idUsuario1) {
+        this.idUsuario1 = idUsuario1;
     }
 
     public void setIdUsuario1(int idUsuario1) {
@@ -33,9 +42,13 @@ public class Conversacion {
     }
 
     @Basic
-    @Column(name = "ID_USUARIO2")
+    @Column(name = "ID_USUARIO2", nullable = false)
     public int getIdUsuario2() {
         return idUsuario2;
+    }
+
+    public void setIdUsuario2(Integer idUsuario2) {
+        this.idUsuario2 = idUsuario2;
     }
 
     public void setIdUsuario2(int idUsuario2) {
@@ -53,5 +66,34 @@ public class Conversacion {
     @Override
     public int hashCode() {
         return Objects.hash(idConversacion, idUsuario1, idUsuario2);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ID_USUARIO1", referencedColumnName = "ID_USUARIO", nullable = false)
+    public Usuario getUsuarioByIdUsuario1() {
+        return usuarioByIdUsuario1;
+    }
+
+    public void setUsuarioByIdUsuario1(Usuario usuarioByIdUsuario1) {
+        this.usuarioByIdUsuario1 = usuarioByIdUsuario1;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ID_USUARIO2", referencedColumnName = "ID_USUARIO", nullable = false)
+    public Usuario getUsuarioByIdUsuario2() {
+        return usuarioByIdUsuario2;
+    }
+
+    public void setUsuarioByIdUsuario2(Usuario usuarioByIdUsuario2) {
+        this.usuarioByIdUsuario2 = usuarioByIdUsuario2;
+    }
+
+    @OneToMany(mappedBy = "conversacionByIdConversacion")
+    public Collection<Mensaje> getMensajesByIdConversacion() {
+        return mensajesByIdConversacion;
+    }
+
+    public void setMensajesByIdConversacion(Collection<Mensaje> mensajesByIdConversacion) {
+        this.mensajesByIdConversacion = mensajesByIdConversacion;
     }
 }
