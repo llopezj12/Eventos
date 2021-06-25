@@ -21,9 +21,13 @@ public class Usuario {
     private Integer rol;
 
     @Id
-    @Column(name = "ID_USUARIO")
+    @Column(name = "ID_USUARIO", nullable = false)
     public int getIdUsuario() {
         return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public void setIdUsuario(int idUsuario) {
@@ -31,7 +35,7 @@ public class Usuario {
     }
 
     @Basic
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", nullable = false, length = 70)
     public String getNombre() {
         return nombre;
     }
@@ -41,7 +45,7 @@ public class Usuario {
     }
 
     @Basic
-    @Column(name = "APELLIDOS")
+    @Column(name = "APELLIDOS", nullable = true, length = 120)
     public String getApellidos() {
         return apellidos;
     }
@@ -51,7 +55,7 @@ public class Usuario {
     }
 
     @Basic
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = true, length = 150)
     public String getPassword() {
         return password;
     }
@@ -61,7 +65,7 @@ public class Usuario {
     }
 
     @Basic
-    @Column(name = "DOMICILIO")
+    @Column(name = "DOMICILIO", nullable = true, length = 150)
     public String getDomicilio() {
         return domicilio;
     }
@@ -71,7 +75,7 @@ public class Usuario {
     }
 
     @Basic
-    @Column(name = "CIUDAD")
+    @Column(name = "CIUDAD", nullable = true, length = 120)
     public String getCiudad() {
         return ciudad;
     }
@@ -81,7 +85,7 @@ public class Usuario {
     }
 
     @Basic
-    @Column(name = "NACIMIENTO")
+    @Column(name = "NACIMIENTO", nullable = true)
     public Date getNacimiento() {
         return nacimiento;
     }
@@ -91,7 +95,7 @@ public class Usuario {
     }
 
     @Basic
-    @Column(name = "GENERO")
+    @Column(name = "GENERO", nullable = false, length = 1)
     public String getGenero() {
         return genero;
     }
@@ -101,7 +105,7 @@ public class Usuario {
     }
 
     @Basic
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", nullable = false, length = 120)
     public String getEmail() {
         return email;
     }

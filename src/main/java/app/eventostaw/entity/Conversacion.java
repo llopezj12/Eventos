@@ -27,34 +27,6 @@ public class Conversacion {
         this.idConversacion = idConversacion;
     }
 
-    @Basic
-    @Column(name = "ID_USUARIO1", nullable = false)
-    public int getIdUsuario1() {
-        return idUsuario1;
-    }
-
-    public void setIdUsuario1(Integer idUsuario1) {
-        this.idUsuario1 = idUsuario1;
-    }
-
-    public void setIdUsuario1(int idUsuario1) {
-        this.idUsuario1 = idUsuario1;
-    }
-
-    @Basic
-    @Column(name = "ID_USUARIO2", nullable = false)
-    public int getIdUsuario2() {
-        return idUsuario2;
-    }
-
-    public void setIdUsuario2(Integer idUsuario2) {
-        this.idUsuario2 = idUsuario2;
-    }
-
-    public void setIdUsuario2(int idUsuario2) {
-        this.idUsuario2 = idUsuario2;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
