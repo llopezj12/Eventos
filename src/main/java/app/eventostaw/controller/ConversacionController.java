@@ -299,6 +299,14 @@ public class ConversacionController {
         return "redirect:/menuConversaciones2";
     }
 
+    @GetMapping("teleopConversacion/{id}")
+    public String TeleopConversacion(@PathVariable("id") Integer id, Model model)
+    {
+        Conversacion c = this.conversacionRepository.findByIdConversacion(id);
+        model.addAttribute("conversacion", c);
+        return "teleopConversacion";
+    }
+
 }
 
 
