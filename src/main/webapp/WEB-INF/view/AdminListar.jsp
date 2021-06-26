@@ -52,13 +52,13 @@
         <td><%= u.getNombre()  %></td>
         <td><%= u.getApellidos()  %></td>
         <td><%= u.getEmail() %></td>
-        <td><a href="/adminEditarUsuario/<%=u.getIdUsuario()%>">Editar</a></td>
+        <td><a href="/editarUsuario/<%=u.getIdUsuario()%>">Editar</a></td>
         <td><a href="/adminEliminarUsuario/<%=u.getIdUsuario()%>">Eliminar</a></td>
     </tr>
     <% } %>
     </thead>
 </table>
-<a href="AdminAgregarUsuario.jsp">Añadir usuario</a>
+<a href="/redireccionarAgregarUsuario">Añadir usuario</a>
 <form action="ServletAdminMostrarUsuarios">
     <%
 
@@ -101,6 +101,6 @@
     <% } %>
     </thead>
 </table>
-<a href="AdminAgregarEvento.jsp">Añadir evento</a>
+<a href="AdminAgregarEvento">Añadir evento</a>
 </body>
 </html>

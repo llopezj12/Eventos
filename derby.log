@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Fri Jun 25 17:41:35 CEST 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017a-43d5-6051-0000063a1cf0 
-on database directory C:\Users\EloyB\Desktop\EventosTAW\evento with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
-Loaded from file:/C:/Users/EloyB/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+Sat Jun 26 13:06:14 CEST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017a-47ff-a424-000001bb9b00 
+on database directory C:\Users\aaron\Documents\GitHub\EventosFuncionaPls\evento with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@2626b418 
+Loaded from file:/C:/Users/aaron/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_191-b12
-user.dir=C:\Users\EloyB\Desktop\EventosTAW
+java.runtime.version=12.0.1+12
+user.dir=C:\Users\aaron\Documents\GitHub\EventosFuncionaPls
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
