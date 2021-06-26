@@ -19,7 +19,7 @@
     </head>
     <body>
         <h1>Lista de Conversaciones</h1>
-        <form action="ServletMenuConversaciones">
+        <form action="/menuConversaciones">
             <%
                 String b = (String)request.getAttribute("busqueda");
                 List<Conversacion> lista = (List<Conversacion>)request.getAttribute("listacontiene");
@@ -81,7 +81,7 @@
                 %>
         </table>
         
-        <form action="ServletConversaciones">
+        <form action="conversaciones/">
             <input type="submit" value="volver">
         </form>
         <br>
@@ -89,14 +89,14 @@
         <h1>Crear Conversacion con usuario</h1>
         
         <% 
-            List<Usuario> listaUsuario = (List<Usuario>)session.getAttribute("listaUsuario");
+            List<Usuario> listaUsuario = (List<Usuario>)request.getAttribute("listaUsuario");
             for (Usuario u : listaUsuario)
             {
                 if (u.getRolesByRol().getIdRol() == 1 || u.getRolesByRol().getIdRol()== 3)
                 {
             %>
             
-            <a href="ServletCrearConversacion?id=<%=u.getIdUsuario()%>"><%=u.getNombre()%> </a>
+            <a href="crearConversacion/<%=u.getIdUsuario()%>"><%=u.getNombre()%> </a>
             
             <% } } %>
 
