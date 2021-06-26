@@ -1,6 +1,8 @@
 package app.eventostaw.controller;
 
+import app.eventostaw.dao.ConversacionRepository;
 import app.eventostaw.dao.UsuarioRepository;
+import app.eventostaw.entity.Conversacion;
 import app.eventostaw.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,9 @@ import java.util.List;
 public class ConversacionController {
 
     private UsuarioRepository usuarioRepository;
+    private ConversacionRepository conversacionRepository;
+
+    public ConversacionRepository getConversacionRepository() { return conversacionRepository; }
 
     public UsuarioRepository getUsuarioRepository() {
         return usuarioRepository;
@@ -29,8 +34,8 @@ public class ConversacionController {
         this.usuarioRepository = usuarioRepository;
     }
 
-    @GetMapping("/conversaciones/{id}")
-    public String conversaciones(@PathVariable("id") Integer id, Model model)
+    @GetMapping("/conversaciones")
+    public String conversaciones(HttpSession session, Model model)
     {
         List<Usuario> listaUsuarios = usuarioRepository.findAll();
 
@@ -43,17 +48,23 @@ public class ConversacionController {
             }
         }
 
-
-
-        //Usuario uff = (Usuario)session.getAttribute("usuario");
-        Usuario user = usuarioRepository.findByIdUsuario(id);
-        //session.setAttribute("usuario", user);
+        Usuario uff = (Usuario)session.getAttribute("usuario");
+        Usuario user = usuarioRepository.findByIdUsuario(uff.getIdUsuario());
+        session.setAttribute("usuario", user);
         model.addAttribute("usuario", user);
         model.addAttribute("listaTeleop", listaTeleop);
-        //request.setAttribute("listaTeleop", listaTeleop);
-        //RequestDispatcher rd = request.getRequestDispatcher("conversaciones.jsp");
-        //rd.forward(request, response);
+
         return "conversaciones";
+    }
+
+    @GetMapping("/conversacion/{id}")
+    public String conversacion(@PathVariable("id") Integer id, Model model, HttpSession session)
+    {
+        Usuario user = (Usuario) session.getAttribute("usuario");
+        Conversacion conversacion;
+        conversacion = conversacionRepository.findByIdConversacion(id);
+        model.addAttribute("conversacion", conversacion);
+        return "conversacion";
     }
 
 }

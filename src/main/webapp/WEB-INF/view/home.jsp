@@ -33,7 +33,7 @@
   <li><a href="registro">Registro</a></li>
   <% } %>
   <% if (user != null) { %>
-  <li><a href="ServletConversaciones">Ticket de ayuda</a></li>
+  <li><a href="/conversaciones">Ticket de ayuda</a></li>
   <li style="float:right"><a href="/cerrarsesion">Cerrar Sesión</a></li>
   <% } %>
 </ul>
