@@ -30,9 +30,9 @@ and open the template in the editor.
     %>
     <body>
         <ul>
-            <li><a  href="inicio.jsp">Inicio</a></li>
-            <li><a href="login.jsp">Identificarse</a></li>
-            <li><a class="active" href="registro.jsp">Registro</a></li>
+            <li><a  href="/">Eventos disponibles</a></li>
+            <li><a href="/login">Identificarse</a></li>
+            <li><a class="active" href="/registro">Registro</a></li>
         </ul>
         <h1>Introduce los datos para crear tu cuenta.</h1>
         <%
@@ -82,32 +82,32 @@ and open the template in the editor.
             }
         %>
         <div class="form">
-            <form method="get" action="ServletRegistro" name="datos" accept-charset="UTF-8">
+            <form method="get" action="/tryregistro" accept-charset="UTF-8">
                 <div class="block">
-                    <label for="nombre">Nombre: </label><input type="text" maxlength="20" size="25" name="nombre" value="<%=nombre%>">
+                    <label>Nombre: </label><input type="text" maxlength="20" size="25" name="nombre" value="<%=nombre%>">
                 </div>
                 <div class="block">
-                    <label for="apellido"> Apellidos: </label><input type="text" maxlength="30" size="25" name="apellido" value="<%=apellido%>">
+                    <label> Apellidos: </label><input type="text" maxlength="30" size="25" name="apellido" value="<%=apellido%>">
                 </div>
                 <div class="block">
-                    <label for="residencia"> Ciudad de residencia: </label><input type="text" maxlength="30" size="25" name="ciudad" value="<%=ciudad%>">
+                    <label> Ciudad de residencia: </label><input type="text" maxlength="30" size="25" name="ciudad" value="<%=ciudad%>">
                 </div>
                 <div class="block">
-                    <label for="domicilo"> Domicilio: </label><input type="text" maxlength="30" size="25" name="domicilio" value="<%=domicilio%>">
+                    <label> Domicilio: </label><input type="text" maxlength="30" size="25" name="domicilio" value="<%=domicilio%>">
                 </div>
                 <div class="block">
-                    <label for="sex"> Género: </label>
-                    <input type="radio" name="sex" value="male" <%=checkMale%>>Hombre
-                    <input type="radio" name="sex" value="female" <%=checkFemale%>>Mujer
+                    <label> Género: </label>
+                    <input type="radio" name="sexo" value="male" <%=checkMale%>>Hombre
+                    <input type="radio" name="sexo" value="female" <%=checkFemale%>>Mujer
                 </div>
                 <div class="block">
-                    <label for="nacimiento"> Fecha de nacimiento: </label><input type="date" name="nacimiento" value="<%=fecha%>">
+                    <label> Fecha de nacimiento: </label><input type="date" name="nacimiento" value="<%=fecha%>">
                 </div>
                 <div class="block">
-                    <label for="email">E-mail: </label><input type="text" maxlength="20" size="25" name="email" value="<%=email%>">
+                    <label>E-mail: </label><input type="text" maxlength="20" size="25" name="email" value="<%=email%>">
                 </div>
                 <div class="block">
-                    <label for="password">Contraseña: </label><input type="password" maxlength="20" size="25" name="password">
+                    <label>Contraseña: </label><input type="password" maxlength="20" size="25" name="password">
                 </div>
                 <%
                     if (error) {
