@@ -1,4 +1,5 @@
-<%-- 
+<%@ page import="app.eventostaw.entity.Usuario" %>
+<%@ page import="java.util.List" %><%--
     Document   : AdminAgregarEvento
     Created on : 16-may-2021, 10:52:34
     Author     : aaron
@@ -18,6 +19,7 @@
     <body>
         <%
             Boolean error = (Boolean)request.getAttribute("error");
+            List<Usuario> listaU = (List)request.getAttribute("lista");
             String errorMsg = "";
             if (error == null) {
                 error = false;
@@ -51,7 +53,16 @@
               <label for="asifil">Num Asientos por Fila</label>
               <input type="text" id="asifil" name="asifil"></br>
               <label for="idcre">ID Creador</label>
-              <input type="text" id="idcre" name="idcre"></br>
+              <select id="idcre" name="idcre"></br>
+                  <%
+                      for(Usuario u : listaU){
+
+                  %>
+                  <option value="<%=u.getIdUsuario()%>"><%=u.getNombre() + " " + u.getApellidos()%></option>
+                  <%
+                      }
+                  %>
+              </select><br>
               <label for="desc">Descripcion</label>
               <input type="text" id="desc" name="desc"></br>
                 <%

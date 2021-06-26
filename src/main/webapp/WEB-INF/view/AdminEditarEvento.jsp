@@ -4,6 +4,8 @@
     Author     : aaron
 --%>
 <%@ page import="app.eventostaw.entity.Evento" %>
+<%@ page import="app.eventostaw.entity.Usuario" %>
+<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,6 +19,7 @@
     <body>
     <%
         Evento e = (Evento)request.getAttribute("evento");
+        List<Usuario> listaU = (List)request.getAttribute("lista");
     %>
         <h1>Editar evento(ID = <%= e.getIdEvento() %>) </h1>
         <div class="form">
@@ -55,8 +58,17 @@
               <input type="text" id="nfilas" name="nfilas" value="<%= e.getNumfilas() %>"></br>
               <label for="asifil">Num Asientos por Fila</label>
               <input type="text" id="asifil" name="asifil" value="<%= e.getNumasientosporfila() %>"></br>
-              <label for="idcre">ID Creador</label>
-              <input type="text" id="idcre" name="idcre" value="<%= e.getIdCreador() %>"></br>
+                  <label for="idcre">ID Creador</label>
+                  <select id="idcre" name="idcre"></br>
+                      <%
+                          for(Usuario u : listaU){
+
+                      %>
+                      <option value="<%=u.getIdUsuario()%>"><%=u.getNombre() + " " + u.getApellidos()%></option>
+                      <%
+                          }
+                      %>
+                  </select><br>
               <label for="desc">Descripcion</label>
               <input type="text" id="desc" name="desc" value="<%= e.getDescripcion() %>"></br>
               <input type="submit" value="Guardar"/></br>

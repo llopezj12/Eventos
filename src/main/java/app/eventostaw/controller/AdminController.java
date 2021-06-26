@@ -93,10 +93,10 @@ public class AdminController {
                                @RequestParam("pass")String password,
                                @RequestParam("dom")String domicilio,
                                @RequestParam("ciudad") String ciudad,
-                               @RequestParam("genero") String sexo,
+                               @RequestParam(value = "genero", required = false) String sexo,
                                @RequestParam("email") String email,
                                @RequestParam("fecha") String nacimiento,
-                               @RequestParam("rol") String rol,
+                               @RequestParam(value = "rol", required = false) String rol,
                                Model model){
         Optional<Roles> r;
         Roles rolBueno = new Roles();
@@ -104,7 +104,7 @@ public class AdminController {
         String errorMsg = "";
         if(rol == null){
             error = true;
-            errorMsg += "Rol no especificado";
+            errorMsg += " Rol no especificado";
         } else{
             r = this.rolesRepository.findById(Integer.parseInt(rol));
             if(r.isPresent()){
@@ -145,6 +145,11 @@ public class AdminController {
         if (password.isEmpty()) {
             error = true;
             errorMsg += " Contraseña vacía";
+        }
+
+        if(sexo == null){
+            error = true;
+            errorMsg += " Genero no especificado";
         }
 
         model.addAttribute("error", error);
@@ -237,6 +242,8 @@ public class AdminController {
     public String redireccionarEvento(@PathVariable("id")Integer id, Model model){
         Optional<Evento> evento = this.eventoRepository.findById(id);
         Evento e = evento.get();
+        List<Usuario> listaEditores = this.usuarioRepository.findByRol(1);
+        model.addAttribute("lista", listaEditores);
         model.addAttribute("evento",e);
         return "AdminEditarEvento";
     }
@@ -312,6 +319,8 @@ public class AdminController {
 
     @GetMapping("/redireccionarAgregarEvento")
     public String redireccionarAgregarEvento(Model model){
+        List<Usuario> listaEditores = this.usuarioRepository.findByRol(1);
+        model.addAttribute("lista", listaEditores);
         return "AdminAgregarEvento";
     }
 
@@ -320,14 +329,16 @@ public class AdminController {
                               @RequestParam("date") String fe,
                               @RequestParam("fechaRes") String feReq,
                               @RequestParam("coste") String coste,
-                              @RequestParam("asientos") String asiFijo,
+                              @RequestParam(value = "asientos", required = false) String asiFijo,
                               @RequestParam("aforo") String aforo,
                               @RequestParam("entradas") String entradas,
                               @RequestParam("nfilas") String numfilas,
                               @RequestParam("asifil") String asifil,
-                              @RequestParam("idcre") String idcre,
+                              @RequestParam(value = "idcre", required = false) String idcre,
                               @RequestParam("desc") String desc,
                               Model model){
+        List<Usuario> listaEditores = this.usuarioRepository.findByRol(1);
+        model.addAttribute("lista", listaEditores);
         boolean error = false;
         String errorMsg = "";
         int aux = 0;
