@@ -19,12 +19,12 @@
         Usuario user = (Usuario)session.getAttribute("usuario");
         if (user != null) {
     %>
-    <jsp:forward page="inicio.jsp"/>
+    <jsp:forward page="/"/>
     <%
         }
     %>
         <ul>
-            <li><a  href="/">Inicio</a></li>
+            <li><a  href="/">Eventos disponibles</a></li>
             <li><a class="active" href="/login">Identificarse</a></li>
             <li><a href="/registro">Registro</a></li>
         </ul>

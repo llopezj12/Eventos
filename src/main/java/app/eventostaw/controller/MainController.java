@@ -2,10 +2,13 @@ package app.eventostaw.controller;
 
 import app.eventostaw.dao.EventoRepository;
 import app.eventostaw.dao.RolesRepository;
+import app.eventostaw.dao.UsuarioInscritoRepository;
 import app.eventostaw.dao.UsuarioRepository;
 import app.eventostaw.entity.Evento;
 import app.eventostaw.entity.Roles;
 import app.eventostaw.entity.Usuario;
+import app.eventostaw.entity.UsuarioInscrito;
+import app.eventostaw.util.Consulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,19 +31,66 @@ public class MainController {
     private EventoRepository eventoRepository;
 
     @Autowired
+    private UsuarioInscritoRepository usuarioInscritoRepository;
+
+    @Autowired
     private RolesRepository rolesRepository;
 
     @GetMapping("/")
-    public String doInit (Model model, HttpSession session) {
-        List<Evento> eventosList = null;
+    public String doInit (@RequestParam(required=false) String clave, @RequestParam(required=false) String precio, @RequestParam(required=false) String aforo, Model model, HttpSession session) {
+        List<Evento> eventosList = new ArrayList<>();
+        Usuario user = (Usuario)session.getAttribute("usuario");
+        float precioF = -1;
+        float aforoF = -1;
+        try {
+            precioF = Float.parseFloat(precio);
+        } catch (Exception e) {
+
+        }
+        try {
+            aforoF = Float.parseFloat(aforo);
+        } catch (Exception e) {
+
+        }
+
+        List<Integer> inscritos = new ArrayList<>();
+        if (user != null) {
+            try {
+                List<UsuarioInscrito> listUsIn = usuarioInscritoRepository.findAllUsuarioInscritoByIdUsuario(user.getIdUsuario());
+                for (UsuarioInscrito ui : listUsIn) {
+                    inscritos.add(ui.getIdEvento());
+                }
+            } catch (Exception e) {
+
+            }
+        }
         try {
             eventosList = eventoRepository.findAll();
+            eventosList.removeIf(evento -> Consulta.EventoAlgunValorNull(evento) || !Consulta.EventoDisponible(evento));
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+
+        if (clave != null && !clave.isEmpty()) {
+            eventosList.removeIf(evento -> !Consulta.buscarClave(evento, clave));
+        }
+        if (precio != null && !precio.isEmpty() && precioF >= 0) {
+            float finalPrecioF = precioF;
+            eventosList.removeIf(evento -> evento.getCoste()> finalPrecioF);
+        }
+        if (aforo != null && !aforo.isEmpty() && aforoF >= 0) {
+            float finalAforoF = aforoF;
+            eventosList.removeIf(evento -> evento.getAforo()> finalAforoF);
+        }
         model.addAttribute("eventosList", eventosList);
+        model.addAttribute("inscritos", inscritos);
+        model.addAttribute("clave", clave);
+        model.addAttribute("precio", precio);
+        model.addAttribute("aforo", aforo);
+
         return "home";
     }
+
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -51,7 +102,7 @@ public class MainController {
     }
     @GetMapping("/tryregistro")
     public String tryregistro(@RequestParam("nombre") String nombre, @RequestParam("apellido") String apellido, @RequestParam("ciudad") String ciudad,
-    @RequestParam("domicilio") String domicilio, @RequestParam("sexo") String sexo, @RequestParam("nacimiento") String nacimiento, @RequestParam("email") String email,
+    @RequestParam("domicilio") String domicilio, @RequestParam(required=false) String sexo, @RequestParam("nacimiento") String nacimiento, @RequestParam("email") String email,
     @RequestParam("password") String password, Model model, HttpSession session) {
         String res = "redirect:/login";
         Date fecha = new Date();
@@ -105,8 +156,7 @@ public class MainController {
         } catch (Exception e) {
             error = true;
         }
-        model.addAttribute("error", error);
-        model.addAttribute("errorMsg", errorMsg);
+
 
         if (!error) {
             Usuario usuario = new Usuario();
@@ -125,13 +175,21 @@ public class MainController {
             usuario.setNacimiento(new java.sql.Date(fecha.getTime()));
             usuario.setDomicilio(domicilio);
             usuario.setRolesByRol(rolesRepository.findById(3).get());
+            try {
+                usuarioRepository.save(usuario);
+            } catch (Exception e) {
+                error=true;
+                errorMsg="E-Mail ya en uso";
+                res = "registro";
+            }
 
-            usuarioRepository.save(usuario);
 
         } else {
             res = "registro";
         }
 
+        model.addAttribute("error", error);
+        model.addAttribute("errorMsg", errorMsg);
         return res;
     }
 
