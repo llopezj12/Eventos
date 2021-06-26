@@ -86,7 +86,7 @@
                 String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
         <tr>
-            <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
+            <td><a href="conversacion/<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
             <td><%=sbeve.getRolesByRol().getDescripcion()%></td>
             <% if (conversacion.getMensajesByIdConversacion().isEmpty()) {
             %>
@@ -118,7 +118,7 @@
         if (user.getIdUsuario()!=usu.getIdUsuario())
         {
 %>
-<a href="ServletCrearConversacion?id=<%=usu.getIdUsuario()%>"><%=usu.getNombre()%></a>
+<a href="crearConversacion/<%=usu.getIdUsuario()%>"><%=usu.getNombre()%></a>
 <%
     } }
 %>

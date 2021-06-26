@@ -67,6 +67,76 @@ public class ConversacionController {
         return "conversacion";
     }
 
+    @GetMapping("/crearConversacion/{id}")
+    public String crearConversacion(@PathVariable("id") Integer id, Model model, HttpSession session)
+    {
+        Usuario uses = (Usuario) session.getAttribute("usuario");
+        Usuario usid = usuarioRepository.findByIdUsuario(id);
+        Boolean encontrado = false;
+        Conversacion found = new Conversacion();
+
+        List<Conversacion> lista = conversacionRepository.findAll();
+        for (Conversacion c : lista)
+        {
+            if ((c.getUsuarioByIdUsuario1().getIdUsuario() == uses.getIdUsuario()
+                    && c.getUsuarioByIdUsuario2().getIdUsuario() == usid.getIdUsuario())
+                    || (c.getUsuarioByIdUsuario1().getIdUsuario() == usid.getIdUsuario()
+                    && c.getUsuarioByIdUsuario2().getIdUsuario() == uses.getIdUsuario()))
+            {
+                encontrado = true;
+                found = c;
+
+            }
+        }
+        if (!encontrado)
+        {
+            Conversacion conv = new Conversacion();
+            if (uses.getRolesByRol().getIdRol()==4)
+            {
+                conv.setUsuarioByIdUsuario1(uses);
+                conv.setUsuarioByIdUsuario2(usid);
+                List<Conversacion> list1 = (List<Conversacion>) uses.getConversacionsByIdUsuario();
+                List<Conversacion> list2 = (List<Conversacion>) usid.getConversacionsByIdUsuario_0();
+                list1.add(conv);
+                list2.add(conv);
+                uses.setConversacionsByIdUsuario(list1);
+                usid.setConversacionsByIdUsuario_0(list2);
+            }
+            else {
+                conv.setUsuarioByIdUsuario1(usid);
+                conv.setUsuarioByIdUsuario2(uses);
+                List<Conversacion> list1 = (List<Conversacion>) usid.getConversacionsByIdUsuario();
+                List<Conversacion> list2 = (List<Conversacion>) uses.getConversacionsByIdUsuario_0();
+                list1.add(conv);
+                list2.add(conv);
+                usid.setConversacionsByIdUsuario(list1);
+                uses.setConversacionsByIdUsuario_0(list2);
+            }
+            conversacionRepository.save(conv);
+            usuarioRepository.save(uses);
+            usuarioRepository.save(usid);
+            model.addAttribute("conversacion", conv);
+
+            return "conversacion";
+            /*conversacionFacade.create(conv);
+            usuarioFacade.edit(uses);
+            usuarioFacade.edit(usid);
+            request.setAttribute("conversacion", conv);
+
+            RequestDispatcher rd = request.getRequestDispatcher("conversacion.jsp");
+            rd.forward(request, response);*/
+        }
+        else {
+
+            model.addAttribute("conversacion", found);
+            return "conversacion";
+
+            /*request.setAttribute("conversacion", found);
+            RequestDispatcher rd = request.getRequestDispatcher("conversacion.jsp");
+            rd.forward(request, response);*/
+        }
+    }
+
 }
 
 
