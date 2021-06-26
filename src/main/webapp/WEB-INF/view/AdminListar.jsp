@@ -20,7 +20,7 @@
     <title>EvenTAW - LIstar</title>
 </head>
 <body>
-<pre></pre>
+<div style="float: left;margin-right: 10px;margin-top: 15px">
 <form action="ServletAdminMostrarUsuarios">
     <%
         String b = (String)request.getAttribute("busqueda");
@@ -33,6 +33,7 @@
     <label>Busqueda: </label><input type="text" maxlength="20" size="25" name="busqueda" value="<%=b%>">
     <input type="submit" value="Buscar">
 </form>
+    <pre></pre>
 <table border="1">
     <thead>
     <th>ID</th>
@@ -59,6 +60,9 @@
     </thead>
 </table>
 <a href="/redireccionarAgregarUsuario">Añadir usuario</a>
+</div>
+
+<div style="float: left;margin-top: 2px" >
 <form action="ServletAdminMostrarUsuarios">
     <%
 
@@ -73,8 +77,8 @@
     <input type="submit" value="Buscar">
 </form>
 <pre></pre>
-<table border="1"  >
-    <thead style="vertical-align: top">
+<table border="1" >
+    <thead>
     <th>ID</th>
     <th>TITULO</th>
     <th>FECHA</th>
@@ -102,5 +106,6 @@
     </thead>
 </table>
 <a href="AdminAgregarEvento">Añadir evento</a>
+</div>
 </body>
 </html>
