@@ -73,8 +73,8 @@
             <%
                 }
             %>
-            <td><a href="ServletTeleopConversacion?id=<%=c.getIdConversacion() %>">Ver Conversacion</a></td>
-            <td><a href="ServletBorrarConversacion?id=<%=c.getIdConversacion() %>">Eliminar Conversacion</a></td>
+            <td><a href="teleopConversacion/<%=c.getIdConversacion() %>">Ver Conversacion</a></td>
+            <td><a href="borrarConversacion/<%=c.getIdConversacion() %>">Eliminar Conversacion</a></td>
             </tr>
             <% 
                 }

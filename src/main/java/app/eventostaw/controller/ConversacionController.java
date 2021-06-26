@@ -144,6 +144,18 @@ public class ConversacionController {
             usuarioRepository.save(uses);
             usuarioRepository.save(usid);
 
+            try {
+                if (conv.getMensajesByIdConversacion().isEmpty() )
+                {
+                    List<Mensaje> m = new ArrayList<Mensaje>();
+                    conv.setMensajesByIdConversacion(m);
+                }
+            } catch (Exception e)
+            {
+                List<Mensaje> m = new ArrayList<Mensaje>();
+                conv.setMensajesByIdConversacion(m);
+            }if (conv.getMensajesByIdConversacion().isEmpty() )
+
             model.addAttribute("conversacion", conv);
 
             return "conversacion";
@@ -176,7 +188,6 @@ public class ConversacionController {
 
         mensajeRepository.save(mensaje);
         List<Mensaje> lista = (List<Mensaje>) conversacion.getMensajesByIdConversacion();
-        //lista.add(mensaje);
         conversacion.setMensajesByIdConversacion(lista);
         Usuario user1 = conversacion.getUsuarioByIdUsuario1();
         Usuario user2 = conversacion.getUsuarioByIdUsuario2();
@@ -205,6 +216,10 @@ public class ConversacionController {
         usuarioRepository.save(user2);
         conversacionRepository.save(conversacion);
 
+        Usuario uff = (Usuario)session.getAttribute("usuario");
+        Usuario usuariosesion = usuarioRepository.findByIdUsuario(uff.getIdUsuario());
+        session.setAttribute("usuario", usuariosesion);
+
         model.addAttribute("conversacion", conversacion);
         return "conversacion";
 
@@ -228,6 +243,68 @@ public class ConversacionController {
         model.addAttribute("listacontiene", listaconv);
         return "menuConversaciones";
 
+    }
+
+    @GetMapping("/menuConversaciones2")
+    public String menuConversaciones(Model model)
+    {
+        List<Conversacion> listaconv;
+        String busqueda = "";
+            listaconv = conversacionRepository.findAll();
+
+        List<Usuario> listausuario = usuarioRepository.findAll();
+        model.addAttribute("busqueda", busqueda);
+        model.addAttribute("listaUsuario", listausuario);
+        model.addAttribute("listacontiene", listaconv);
+        return "menuConversaciones";
+
+    }
+
+
+    @GetMapping("/borrarConversacion/{id}")
+    public String borrarConversacion(@PathVariable("id") Integer id, Model model, HttpSession session)
+    {
+        Conversacion c = conversacionRepository.findByIdConversacion(id);
+
+        List<Mensaje> listaMensajes = (List<Mensaje>) c.getMensajesByIdConversacion();
+        for(Mensaje m : listaMensajes){
+            this.mensajeRepository.delete(m);
+        }
+        Usuario user1 = c.getUsuarioByIdUsuario1();
+        Usuario user2 = c.getUsuarioByIdUsuario2();
+
+        List<Conversacion> list1 = (List<Conversacion>) user1.getConversacionsByIdUsuario();
+        List<Conversacion> list2 = (List<Conversacion>) user2.getConversacionsByIdUsuario_0();
+
+        list1.remove(c);
+        list2.remove(c);
+
+        user1.setConversacionsByIdUsuario(list1);
+        user2.setConversacionsByIdUsuario_0(list2);
+
+        usuarioRepository.save(user1);
+        usuarioRepository.save(user2);
+
+        conversacionRepository.delete(c);
+
+        List<Usuario> listausuario = usuarioRepository.findAll();
+        List<Conversacion> listaconv = conversacionRepository.findAll();
+
+        Usuario uff = (Usuario)session.getAttribute("usuario");
+        Usuario user = usuarioRepository.findByIdUsuario(uff.getIdUsuario());
+        session.setAttribute("usuario", user);
+
+
+
+        return "redirect:/menuConversaciones2";
+    }
+
+    @GetMapping("teleopConversacion/{id}")
+    public String TeleopConversacion(@PathVariable("id") Integer id, Model model)
+    {
+        Conversacion c = this.conversacionRepository.findByIdConversacion(id);
+        model.addAttribute("conversacion", c);
+        return "teleopConversacion";
     }
 
 }

@@ -10,10 +10,10 @@ import java.util.List;
 public interface ConversacionRepository extends JpaRepository<Conversacion,Integer> {
     Conversacion findByIdConversacion(Integer id);
 
-    @Query("SELECT c from Conversacion c where c.usuarioByIdUsuario1.nombre LIKE CONCAT('%', :busqueda, '%')" +
-            "or c.usuarioByIdUsuario1.apellidos LIKE CONCAT('%', :busqueda, '%')" +
-            "or c.usuarioByIdUsuario2.nombre LIKE CONCAT('%', :busqueda, '%')" +
-            "or c.usuarioByIdUsuario2.apellidos LIKE CONCAT('%', :busqueda, '%')")
+    @Query("SELECT c from Conversacion c where upper(c.usuarioByIdUsuario1.nombre) LIKE CONCAT('%', upper(:busqueda), '%')" +
+            "or upper(c.usuarioByIdUsuario1.apellidos) LIKE CONCAT('%', upper(:busqueda), '%')" +
+            "or upper(c.usuarioByIdUsuario2.nombre) LIKE CONCAT('%', upper(:busqueda), '%')" +
+            "or upper(c.usuarioByIdUsuario2.apellidos) LIKE CONCAT('%', upper(:busqueda), '%')")
     List<Conversacion> findByBusqueda(@Param("busqueda") String busqueda);
 
 
