@@ -17,8 +17,8 @@
     </head>
     <%
 
-        Usuario user = (Usuario) request.getAttribute("usuario");
-        //Usuario user = (Usuario) session.getAttribute("usuario");
+
+        Usuario user = (Usuario) session.getAttribute("usuario");
 
     %>
     <body>
@@ -49,7 +49,7 @@
                 String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
         <tr>
-            <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
+            <td><a href="conversacion/<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
             <td><%=sbeve.getRolesByRol().getDescripcion()%></td>
             <%
                 if (conversacion.getMensajesByIdConversacion().isEmpty()) {
@@ -63,7 +63,16 @@
                 List<Mensaje> lm = (List<Mensaje>) conversacion.getMensajesByIdConversacion();
                 Mensaje ultimomensaje = lm.get(lm.size() - 1);
 
-                String horayminuto = ultimomensaje.getHora() + ":" + ultimomensaje.getMinuto();
+                String horayminuto =  "" + ultimomensaje.getHora();
+                if (ultimomensaje.getMinuto() < 10)
+                {
+                    horayminuto += ":0" + ultimomensaje.getMinuto();
+                }
+                else {
+                    horayminuto += ":" + ultimomensaje.getMinuto();
+                }
+
+
             %>
             <td><%=ultimomensaje.getMensaje()%></td>
             <td><%=ultimomensaje.getUsuarioByIdUsuario().getNombre()%></td>
@@ -74,14 +83,14 @@
         </tr>
         <%
             }
-            for (Conversacion conversacion : user.getConversacionsByIdUsuario()) {
+            for (Conversacion conversacion : user.getConversacionsByIdUsuario_0()) {
                 Usuario sbeve = new Usuario();
                 if (conversacion.getUsuarioByIdUsuario1().getIdUsuario()==user.getIdUsuario())
                 {
                     sbeve = conversacion.getUsuarioByIdUsuario2();
                 }
                 else {
-                    sbeve = conversacion.getUsuarioByIdUsuario2();
+                    sbeve = conversacion.getUsuarioByIdUsuario1();
                 }
                 String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
@@ -97,7 +106,15 @@
             } else {
                 List<Mensaje> lm = (List<Mensaje>) conversacion.getMensajesByIdConversacion();
                 Mensaje ultimomensaje = lm.get(lm.size() - 1);
-                String horayminuto = ultimomensaje.getHora() + ":" + ultimomensaje.getMinuto();
+                String horayminuto =  "" + ultimomensaje.getHora();
+                if (ultimomensaje.getMinuto() < 10)
+                {
+                    horayminuto += ":0" + ultimomensaje.getMinuto();
+                }
+                else {
+                    horayminuto += ":" + ultimomensaje.getMinuto();
+                }
+
             %>
             <td><%=ultimomensaje.getMensaje()%></td>
             <td><%=ultimomensaje.getUsuarioByIdUsuario().getNombre()%></td>

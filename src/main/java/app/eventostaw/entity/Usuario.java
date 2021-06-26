@@ -147,7 +147,7 @@ public class Usuario {
         this.conversacionsByIdUsuario = conversacionsByIdUsuario;
     }
 
-    @OneToMany(mappedBy = "usuarioByIdUsuario2")
+    @OneToMany(mappedBy = "usuarioByIdUsuario2", fetch = FetchType.EAGER)
     public Collection<Conversacion> getConversacionsByIdUsuario_0() {
         return conversacionsByIdUsuario_0;
     }
