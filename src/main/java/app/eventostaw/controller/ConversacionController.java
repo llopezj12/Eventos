@@ -147,22 +147,14 @@ public class ConversacionController {
             model.addAttribute("conversacion", conv);
 
             return "conversacion";
-            /*conversacionFacade.create(conv);
-            usuarioFacade.edit(uses);
-            usuarioFacade.edit(usid);
-            request.setAttribute("conversacion", conv);
 
-            RequestDispatcher rd = request.getRequestDispatcher("conversacion.jsp");
-            rd.forward(request, response);*/
         }
         else {
 
             model.addAttribute("conversacion", found);
             return "conversacion";
 
-            /*request.setAttribute("conversacion", found);
-            RequestDispatcher rd = request.getRequestDispatcher("conversacion.jsp");
-            rd.forward(request, response);*/
+
         }
     }
     @GetMapping("/mensaje")
@@ -215,6 +207,26 @@ public class ConversacionController {
 
         model.addAttribute("conversacion", conversacion);
         return "conversacion";
+
+    }
+
+    @GetMapping("/menuConversaciones")
+    public String menuConversaciones(@RequestParam("busqueda") String busqueda, Model model)
+    {
+        List<Conversacion> listaconv;
+        if (busqueda == "" ||busqueda== null)
+        {
+            listaconv = conversacionRepository.findAll();
+        }
+        else
+        {
+            listaconv = conversacionRepository.findByBusqueda(busqueda);
+        }
+        List<Usuario> listausuario = usuarioRepository.findAll();
+        model.addAttribute("busqueda", busqueda);
+        model.addAttribute("listaUsuario", listausuario);
+        model.addAttribute("listacontiene", listaconv);
+        return "menuConversaciones";
 
     }
 

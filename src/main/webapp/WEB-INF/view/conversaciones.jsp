@@ -142,7 +142,7 @@
 
 <%            if (user.getRolesByRol().getIdRol() == 4 || user.getRolesByRol().getIdRol()== 2) {
 %>
-<form action="ServletMenuConversaciones">
+<form action="/menuConversaciones">
     <input type="hidden" value="" name="busqueda">
     <input type="submit" value="Menu de Conversaciones">
 </form>
