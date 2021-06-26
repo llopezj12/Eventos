@@ -56,7 +56,7 @@
                 %>
         </table>
         
-        <form action="ServletConversaciones" >
+        <form action="/conversaciones" >
             <input type="submit" value="Ver Conversaciones">
         </form>
     </body>

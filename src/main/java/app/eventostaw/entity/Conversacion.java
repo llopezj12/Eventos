@@ -14,6 +14,7 @@ public class Conversacion {
     private Collection<Mensaje> mensajesByIdConversacion;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_CONVERSACION", nullable = false)
     public int getIdConversacion() {
         return idConversacion;
