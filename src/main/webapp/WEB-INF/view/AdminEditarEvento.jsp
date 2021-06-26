@@ -8,16 +8,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="css/estilo.css">
-        <link rel="stylesheet" href="css/estiloregistro.css">
+        <link rel="stylesheet" href="/css/estilo.css">
+        <link rel="stylesheet" href="/css/estiloregistro.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
+    <body>
     <%
         Evento e = (Evento)request.getAttribute("evento");
     %>
-    <body>
         <h1>Editar evento(ID = <%= e.getIdEvento() %>) </h1>
         <div class="form">
               <form method="post" action="/guardarEvento">
@@ -31,8 +31,21 @@
               <label for="coste">Coste</label>
               <input type="text" id="coste" name="coste" value="<%= e.getCoste() %>"></br>
               <label>¿Asientos fijos?</label>
-              <input type="radio" id="asientos1" name="asientos" value="S" >Si
-              <input type="radio" id="asientos2" name="asientos" value="N" >No</br>
+                  <%
+                      if(e.getAsientosfijos().equals("S")){
+
+                  %>
+                  <input type="radio" id="asientos1" name="asientos" value="S" checked>Si
+                  <input type="radio" id="asientos2" name="asientos" value="N" >No</br>
+                  <%
+                      } else{
+
+                  %>
+                  <input type="radio" id="asientos1" name="asientos" value="S" >Si
+                  <input type="radio" id="asientos2" name="asientos" value="N" checked>No</br>
+                  <%
+                      }
+                  %>
               <input type="hidden" id="asi" name="asi" value="<%= e.getAsientosfijos() %>">
               <label for="aforo">Aforo</label>
               <input type="text" id="aforo" name="aforo" value="<%= e.getAforo() %>"></br> 

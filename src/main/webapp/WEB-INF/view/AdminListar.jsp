@@ -105,7 +105,7 @@
     <% } %>
     </thead>
 </table>
-<a href="AdminAgregarEvento">Añadir evento</a>
+<a href="/redireccionarAgregarEvento">Añadir evento</a>
 </div>
 </body>
 </html>

@@ -258,6 +258,8 @@ public class AdminController {
                                 Model model){
         Optional<Evento> e = this.eventoRepository.findById(Integer.parseInt(id));
         Evento evento = new Evento();
+        int aux = 0;
+        int aux2 = 0;
         if(e.isPresent()){
             evento = e.get();
         }
@@ -266,12 +268,19 @@ public class AdminController {
         if(usuario.isPresent()){
             u = usuario.get();
         }
-        if(asiFijo != null){
-            evento.setAsientosfijos(asiFijo);
-        } else{
-            evento.setAsientosfijos(asiFijoDefault);
+        if(asiFijo != null) {
+            if (asiFijo.charAt(0) == 'N') {
+                numfilas = null;
+                asifil = null;
+            } else {
+                if (numfilas != null) {
+                    aux = Integer.parseInt(numfilas);
+                }
+                if (asifil != null) {
+                    aux2 = Integer.parseInt(asifil);
+                }
+            }
         }
-
         Date fecha = new Date();
         Date fecha2 = new Date();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -288,9 +297,10 @@ public class AdminController {
         }
         evento.setTitulo(titulo);
         evento.setCoste(Integer.parseInt(coste));
-        evento.setNumfilas(Integer.parseInt(numfilas));
-        evento.setNumasientosporfila(Integer.parseInt(asifil));
+        evento.setNumfilas(aux);
+        evento.setNumasientosporfila(aux2);
         evento.setDescripcion(desc);
+        evento.setAsientosfijos(asiFijo);
         evento.setIdCreador(u.getIdUsuario());
         evento.setEntradas(Integer.parseInt(entradas));
         evento.setAforo(Integer.parseInt(aforo));
@@ -298,5 +308,139 @@ public class AdminController {
         evento.setFechares(new java.sql.Date(fecha2.getTime()));
         this.eventoRepository.save(evento);
         return "redirect:/adminlistar";
+    }
+
+    @GetMapping("/redireccionarAgregarEvento")
+    public String redireccionarAgregarEvento(Model model){
+        return "AdminAgregarEvento";
+    }
+
+    @PostMapping("/crearEvento")
+    public String crearEvento(@RequestParam("titulo") String titulo,
+                              @RequestParam("date") String fe,
+                              @RequestParam("fechaRes") String feReq,
+                              @RequestParam("coste") String coste,
+                              @RequestParam("asientos") String asiFijo,
+                              @RequestParam("aforo") String aforo,
+                              @RequestParam("entradas") String entradas,
+                              @RequestParam("nfilas") String numfilas,
+                              @RequestParam("asifil") String asifil,
+                              @RequestParam("idcre") String idcre,
+                              @RequestParam("desc") String desc,
+                              Model model){
+        boolean error = false;
+        String errorMsg = "";
+        int aux = 0;
+        int aux2 = 0;
+        if(titulo.isEmpty()){
+            error = true;
+            errorMsg += "Titulo no especificado ";
+        }
+        if(fe.isEmpty()){
+            error = true;
+            errorMsg += "Fecha de evento no especificada ";
+        }
+
+        if(feReq.isEmpty()){
+            error = true;
+            errorMsg += "Fecha limite de venta de entradas no especificada ";
+        }
+
+        if(coste.isEmpty()){
+            error = true;
+            errorMsg += "Coste no especificado ";
+        }
+
+
+        if(entradas.isEmpty()){
+            error = true;
+            errorMsg += "Entradas no especificadas ";
+        }
+
+        if(aforo.isEmpty()){
+            error = true;
+            errorMsg += "Aforo no especificado ";
+        }
+
+        if(idcre.isEmpty()){
+            error = true;
+            errorMsg += "ID del crador no especificado ";
+        }
+
+        if(desc.isEmpty()){
+            error = true;
+            errorMsg += "Descripcion no especificada ";
+        }
+
+        Optional<Usuario> usuario = this.usuarioRepository.findById(Integer.parseInt(idcre));
+        Usuario u = new Usuario();
+        if(usuario.isPresent()){
+            u = usuario.get();
+        } else{
+            error = true;
+            errorMsg += "Usuario especiicado no encontrado ";
+        }
+
+
+        Date fecha = new Date();
+        Date fecha2 = new Date();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            fecha = df.parse(fe);
+        } catch (ParseException ex) {
+            error = true;
+        }
+
+        try {
+            fecha2 = df.parse(feReq);
+        } catch (ParseException ex) {
+            error = true;
+        }
+
+        if(asiFijo != null){
+            if(asiFijo.charAt(0) == 'N'){
+                numfilas = null;
+                asifil = null;
+            } else{
+                if(numfilas == null){
+                    error = true;
+                    errorMsg += "Numero de filas no especificado ";
+                } else{
+                    aux = Integer.parseInt(numfilas);
+                }
+
+                if(asifil == null){
+                    error = true;
+                    errorMsg += "Numero de asientos por fila no especificado ";
+                } else {
+                    aux2 = Integer.parseInt(asifil);
+                }
+            }
+        } else{
+            error = true;
+            errorMsg += "Asientos fijos no especificados ";
+        }
+
+        model.addAttribute("error", error);
+        model.addAttribute("errorMsg", errorMsg);
+
+        if(!error){
+            Evento evento = new Evento();
+            evento.setTitulo(titulo);
+            evento.setCoste(Integer.parseInt(coste));
+            evento.setNumfilas(aux);
+            evento.setNumasientosporfila(aux2);
+            evento.setDescripcion(desc);
+            evento.setIdCreador(u.getIdUsuario());
+            evento.setAsientosfijos(asiFijo);
+            evento.setEntradas(Integer.parseInt(entradas));
+            evento.setAforo(Integer.parseInt(aforo));
+            evento.setFecha(new java.sql.Date(fecha.getTime()));
+            evento.setFechares(new java.sql.Date(fecha2.getTime()));
+            this.eventoRepository.save(evento);
+            return "redirect:/adminlistar";
+        } else{
+            return "AdminAgregarEvento";
+        }
     }
 }
