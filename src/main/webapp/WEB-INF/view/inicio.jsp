@@ -28,7 +28,7 @@
             <li><a href="registro.jsp">Registro</a></li>
             <% } %>
             <% if (user != null) { %>
-            <li><a href="ServletConversaciones">Ticket de ayuda</a></li>
+            <li><a href="/conversaciones">Ticket de ayuda</a></li>
             <!--<li style="float:right"><a href="about.asp">Mi cuenta</a></li>-->
             <% } %>
         </ul>
