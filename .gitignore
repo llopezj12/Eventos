@@ -37,3 +37,4 @@ evento/log/log.ctrl
 evento/db.lck
 *.dat
 evento/log/logmirror.ctrl
+derby.log
