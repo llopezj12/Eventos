@@ -24,7 +24,7 @@ and open the template in the editor.
         Usuario user = (Usuario)session.getAttribute("usuario");
         if (user != null) {
     %>
-    <jsp:forward page="inicio.jsp"/>
+    <jsp:forward page="/"/>
     <%
         }
     %>

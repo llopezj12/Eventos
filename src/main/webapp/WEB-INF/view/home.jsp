@@ -11,6 +11,7 @@
 <%@page import="java.util.List"%>
 <%@page import="app.eventostaw.entity.Usuario"%>
 <%@ page import="java.text.DateFormat" %>
+<%@ page import="app.eventostaw.entity.UsuarioInscrito" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -24,6 +25,7 @@
   Usuario user = (Usuario)session.getAttribute("usuario");
   List<Evento> eventosList = (List)request.getAttribute("eventosList");
   DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+  List<Integer> inscritos = (List)request.getAttribute("inscritos");
 %>
 <body>
 <ul>
@@ -34,16 +36,29 @@
   <% } %>
   <% if (user != null) { %>
   <li><a href="/conversaciones">Ticket de ayuda</a></li>
-  <li style="float:right"><a href="/cerrarsesion">Cerrar Sesión</a></li>
+  <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
   <% } %>
 </ul>
 <h1>Echa un vistazo a los eventos disponibles.</h1>
+<form class="form-inline" action="/" style="margin-left: 500px; margin-bottom: 20px">
+  <label for="clave">Palabra clave</label>
+  <input size="24" type="text" id="clave" placeholder="Busca por título o descripción" name="clave" <% if (request.getAttribute("clave") != null) { %>value="<%=request.getAttribute("clave")%>"<% } %>>
+
+  <label for="precio">Precio máx.</label>
+  <input size="1" type="text" id="precio" name="precio" <% if (request.getAttribute("precio") != null) { %>value="<%=request.getAttribute("precio")%>"<% } %>>
+
+  <label for="aforo">Aforo máx.</label>
+  <input size="1" type="text" id="aforo" name="aforo" <% if (request.getAttribute("aforo") != null) { %>value="<%=request.getAttribute("aforo")%>"<% } %>>
+
+  <button type="submit">Buscar</button>
+</form>
 <div style="margin-inline: 200px">
   <% if (eventosList.isEmpty()) { %>
   <div>Vaya, parece que esto está vacío.</div>
   <% } else { %>
   <div class="wrapper">
     <% for (Evento e : eventosList) {%>
+
     <div class="box <%=e.getIdEvento()%>">
       <h3 style="margin-top:0px"><%=e.getTitulo()%></h3>
       <div><%=e.getDescripcion()%></div>
@@ -55,7 +70,11 @@
       <div>Se celebra: <%=df.format(e.getFecha())%>.</div>
       <div>Caduca: <%=df.format(e.getFechares())%>.</div>
       <%if (user != null) {%>
-        <div style="margin-left: 30px; margin-top: 30px"><a class="button4" href="InscribirseEvento?=<%=e.getIdEvento()%>">Inscribete</a></div>
+        <%if (inscritos.contains(e.getIdEvento())) {%>
+          <div style="margin-left: 30px; margin-top: 30px"><a class="button4" href="/QuitarEvento?idEvento=<%=e.getIdEvento()%>">Anular</a></div>
+        <% } else { %>
+          <div style="margin-left: 30px; margin-top: 30px"><a class="button4" href="/InscribirseEvento?idEvento=<%=e.getIdEvento()%>">Inscribete</a></div>
+        <% } %>
       <% } %>
     </div>
     <% } %>
