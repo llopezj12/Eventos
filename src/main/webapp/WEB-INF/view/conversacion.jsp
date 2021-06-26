@@ -30,7 +30,15 @@
 
                 %>
                 <tr>
-                    <%                    String horayminuto = m.getHora() + ":" + m.getMinuto();
+                    <%
+                        String horayminuto =  "" + m.getHora();
+                        if (m.getMinuto() < 10)
+                        {
+                            horayminuto += ":0" + m.getMinuto();
+                        }
+                    else {
+                         horayminuto += ":" + m.getMinuto();
+                        }
                         if (m.getUsuarioByIdUsuario().getIdUsuario() == user.getIdUsuario()) {
                     %>
 
@@ -54,13 +62,13 @@
                 %>
             </tbody>
         </table>
-        <form action="ServletMensaje">
+        <form action="/mensaje">
             <input type="hidden" name="conver" value="<%= conv.getIdConversacion()%>">
 
             <input type="text" id="Mensaje" name="msg"> <br>
             <input type="submit" value="Enviar Mensaje"><br>
         </form>
-        <form action="ServletConversaciones" >
+        <form action="/conversaciones" >
             <input type="submit" value="Ver Conversaciones">
         </form>
     </body>

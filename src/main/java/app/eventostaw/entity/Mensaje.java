@@ -17,6 +17,7 @@ public class Mensaje {
     private Usuario usuarioByIdUsuario;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_MENSAJE", nullable = false)
     public int getIdMensaje() {
         return idMensaje;
