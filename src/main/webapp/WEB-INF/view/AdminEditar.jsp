@@ -33,8 +33,21 @@
               <label for="dom">Domicilio</label>
               <input type="text" id="dom" name="dom" value="<%= u.getDomicilio() %>"></br>
               <label for="gen">Genero</label>
-              <input type="radio" id="genero1" name="genero" value="H" >Hombre
+                  <%
+                      if(u.getGenero().equals("H")){
+
+                  %>
+              <input type="radio" id="genero1" name="genero" value="H" checked>Hombre
               <input type="radio" id="genero2" name="genero" value="M" >Mujer</br>
+                  <%
+                      }else{
+
+                  %>
+                  <input type="radio" id="genero1" name="genero" value="H" >Hombre
+                  <input type="radio" id="genero2" name="genero" value="M" checked>Mujer</br>
+                  <%
+                      }
+                  %>
               <input type="hidden" id="gen" name="gen" value="<%= u.getGenero() %>">
               <label for="fecha">Fecha Nac</label>
               <input type="date" id="fecha" name="fecha" value="<%= u.getNacimiento() %>"></br> 
@@ -43,12 +56,55 @@
               <label for="pass">Contraseña</label>
               <input type="text" id="pass" name="pass" value="<%= u.getPassword() %>"></br>
               <label>Rol</label>
-              <input type="radio" id="rol1" name="rol" value="1" >Creador de Evento</br>
-              <input type="radio" id="rol2" name="rol" value="2" >Administrador</br>
-              <input type="radio" id="rol3" name="rol" value="3" >Usuario</br>
-              <input type="radio" id="rol4" name="rol" value="4" >Teleoperador</br>
-              <input type="radio" id="rol5" name="rol" value="5" >Analista </br>
-              <input type="hidden" id="rolDef" name="rolDef" value="<%= u.getRol() %>">
+                  <%
+                      if(u.getRol() == 1){
+
+                  %>
+                  <input type="radio" id="rol1" name="rol" value="1" checked>Creador de Evento</br>
+                  <input type="radio" id="rol2" name="rol" value="2" >Administrador</br>
+                  <input type="radio" id="rol3" name="rol" value="3" >Usuario</br>
+                  <input type="radio" id="rol4" name="rol" value="4" >Teleoperador</br>
+                  <input type="radio" id="rol5" name="rol" value="5" >Analista </br>
+                  <%
+                      } else if(u.getRol() == 2){
+
+                  %>
+                  <input type="radio" id="rol1" name="rol" value="1" >Creador de Evento</br>
+                  <input type="radio" id="rol2" name="rol" value="2" checked>Administrador</br>
+                  <input type="radio" id="rol3" name="rol" value="3" >Usuario</br>
+                  <input type="radio" id="rol4" name="rol" value="4" >Teleoperador</br>
+                  <input type="radio" id="rol5" name="rol" value="5" >Analista </br>
+               <%
+                   } else if(u.getRol() == 3){
+
+               %>
+                  <input type="radio" id="rol1" name="rol" value="1" >Creador de Evento</br>
+                  <input type="radio" id="rol2" name="rol" value="2" >Administrador</br>
+                  <input type="radio" id="rol3" name="rol" value="3" checked>Usuario</br>
+                  <input type="radio" id="rol4" name="rol" value="4" >Teleoperador</br>
+                  <input type="radio" id="rol5" name="rol" value="5" >Analista </br>
+               <%
+                   } else if(u.getRol() == 4){
+
+               %>
+                  <input type="radio" id="rol1" name="rol" value="1" >Creador de Evento</br>
+                  <input type="radio" id="rol2" name="rol" value="2" >Administrador</br>
+                  <input type="radio" id="rol3" name="rol" value="3" >Usuario</br>
+                  <input type="radio" id="rol4" name="rol" value="4" checked>Teleoperador</br>
+                  <input type="radio" id="rol5" name="rol" value="5" >Analista </br>
+               <%
+                   } else if(u.getRol() == 5){
+
+               %>
+                  <input type="radio" id="rol1" name="rol" value="1" >Creador de Evento</br>
+                  <input type="radio" id="rol2" name="rol" value="2" >Administrador</br>
+                  <input type="radio" id="rol3" name="rol" value="3" >Usuario</br>
+                  <input type="radio" id="rol4" name="rol" value="4" >Teleoperador</br>
+                  <input type="radio" id="rol5" name="rol" value="5" checked>Analista </br>
+                  <%
+                      }
+                  %>
+                  <input type="hidden" id="rolDef" name="rolDef" value="<%= u.getRol() %>">
               <input type="submit" value="Guardar"/></br>
               </form>
         </div>
