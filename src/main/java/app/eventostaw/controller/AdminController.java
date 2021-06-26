@@ -3,6 +3,7 @@ package app.eventostaw.controller;
 import app.eventostaw.dao.EventoRepository;
 import app.eventostaw.dao.RolesRepository;
 import app.eventostaw.dao.UsuarioRepository;
+import app.eventostaw.entity.Conversacion;
 import app.eventostaw.entity.Evento;
 import app.eventostaw.entity.Roles;
 import app.eventostaw.entity.Usuario;
@@ -453,5 +454,43 @@ public class AdminController {
         } else{
             return "AdminAgregarEvento";
         }
+    }
+
+    @PostMapping("/filtrarUsuarios")
+    public String filtrarUsuario(@RequestParam("busqueda") String busqueda, Model model){
+        List<Usuario> listaUsuarios;
+        List<Evento> listaEventos = this.eventoRepository.findAll();
+        if (busqueda == "" ||busqueda== null)
+        {
+            listaUsuarios = this.usuarioRepository.findAll();
+        }
+        else
+        {
+            listaUsuarios = this.usuarioRepository.findByBusqueda(busqueda);
+        }
+        model.addAttribute("busqueda", busqueda);
+        model.addAttribute("lista", listaUsuarios);
+        model.addAttribute("listaE",listaEventos);
+        return "AdminListar";
+
+    }
+
+    @PostMapping("/filtrarEventos")
+    public String filtrarEventos(@RequestParam("busquedaEvento") String busquedaEvento, Model model){
+        List<Usuario> listaUsuarios = this.usuarioRepository.findAll();
+        List<Evento> listaEventos;
+        if (busquedaEvento == "" ||busquedaEvento == null)
+        {
+            listaEventos = this.eventoRepository.findAll();
+        }
+        else
+        {
+            listaEventos = this.eventoRepository.findByBusqueda(busquedaEvento);
+        }
+        model.addAttribute("busquedaEvento", busquedaEvento);
+        model.addAttribute("lista", listaUsuarios);
+        model.addAttribute("listaE",listaEventos);
+        return "AdminListar";
+
     }
 }

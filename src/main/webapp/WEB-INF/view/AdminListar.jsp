@@ -21,7 +21,7 @@
 </head>
 <body>
 <div style="float: left;margin-right: 10px;margin-top: 15px; margin-left: 10px" >
-<form action="ServletAdminMostrarUsuarios">
+<form method="post" action="/filtrarUsuarios">
     <%
         String b = (String)request.getAttribute("busqueda");
         List<Usuario> listaFiltrada = (List)request.getAttribute("lista");
@@ -40,6 +40,7 @@
     <th>NOMBRE</th>
     <th>APELLIDOS</th>
     <th>CORREO</th>
+    <th>ROL</th>
     <th>EDITAR</th>
     <th>ELIMINAR</th>
     </tr>
@@ -53,6 +54,7 @@
         <td><%= u.getNombre()  %></td>
         <td><%= u.getApellidos()  %></td>
         <td><%= u.getEmail() %></td>
+        <td><%=u.getRolesByRol().getDescripcion()%></td>
         <td><a href="/editarUsuario/<%=u.getIdUsuario()%>">Editar</a></td>
         <td><a href="/adminEliminarUsuario/<%=u.getIdUsuario()%>">Eliminar</a></td>
     </tr>
@@ -64,7 +66,7 @@
 </div>
 
 <div style="float: left;margin-top: 2px" >
-<form action="ServletAdminMostrarUsuarios">
+<form method="post" action="/filtrarEventos">
     <%
 
         String bEvento = (String)request.getAttribute("busquedaEvento");
