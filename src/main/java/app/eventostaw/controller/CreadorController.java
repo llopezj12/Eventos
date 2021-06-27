@@ -3,6 +3,7 @@ package app.eventostaw.controller;
 import app.eventostaw.dao.EventoRepository;
 import app.eventostaw.entity.Evento;
 import app.eventostaw.entity.Usuario;
+import app.eventostaw.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,23 +20,24 @@ import java.util.Optional;
 @Controller
 public class CreadorController {
 
+    private EventoService eventoService;
+
     @Autowired
-    private EventoRepository eventoRepository;
-
-
+    public void setEventoService(EventoService eventoService) {
+        this.eventoService = eventoService;
+    }
 
     @GetMapping("/creador")
     public String doInit (Model model, HttpSession session) {
         Usuario user = (Usuario)session.getAttribute("usuario");
-        List<Evento> listaEventos = this.eventoRepository.findByIdCreador(user.getIdUsuario());
+        List<Evento> listaEventos = this.eventoService.buscarEventoIdCreador(user.getIdUsuario());
         model.addAttribute("listaEventos", listaEventos);
-        return "redirect:/inicio";
+        return "inicio";
     }
 
     @GetMapping("/nuevoEvento")
     public String doNuevo (Model model) {
-        //Evento evento = new Evento();
-        //model.addAttribute("evento", evento);
+
         return "crearEditarEvento";
     }
 
@@ -50,7 +52,7 @@ public class CreadorController {
             @RequestParam("limiteEntradas") String limiteEntradas,
             @RequestParam(value = "asientosFijos", required = false) String asientosFijos,
             @RequestParam("numFilas") String numFilas,
-            @RequestParam("limiteEntradas") String asientosFila,
+            @RequestParam("asientosFila") String asientosFila,
             Model model, HttpSession session) {
 
         Usuario usuario = (Usuario)session.getAttribute("usuario");
@@ -123,7 +125,7 @@ public class CreadorController {
         if(!error){
             Evento evento = new Evento();
             if(id.length()>0){//Editar
-                Optional<Evento> e = this.eventoRepository.findById(Integer.parseInt(id));
+                Optional<Evento> e = this.eventoService.buscarEventoId(Integer.parseInt(id));
                 if(e.isPresent()){
                     evento = e.get();
                 }
@@ -149,10 +151,9 @@ public class CreadorController {
             if (id.isEmpty()  || id.length()<=0) { // Crear nuevo evento
                 evento.setIdCreador(usuario.getIdUsuario());
             }
-            this.eventoRepository.save(evento);
-            List<Evento> listaEventos = this.eventoRepository.findByIdCreador(usuario.getIdUsuario());
-            model.addAttribute("listaEventos", listaEventos);
-            return "inicio";
+            this.eventoService.guardarEvento(evento);
+
+            return "redirect:/creador";
         }else{
             return "crearEditarEvento";
         }
@@ -160,22 +161,52 @@ public class CreadorController {
 
     @GetMapping("/eliminarEvento/{id}")
     public String doEliminarEvento(@PathVariable("id") Integer id, Model model, HttpSession session){
-        Optional<Evento> e = this.eventoRepository.findById(id);
+        Optional<Evento> e = this.eventoService.buscarEventoId(id);
         if(e.isPresent()){
             Evento aux = e.get();
-            this.eventoRepository.delete(aux);
+            this.eventoService.borrarEvento(aux);
         }
-        Usuario usuario = (Usuario)session.getAttribute("usuario");
-        List<Evento> listaEventos = this.eventoRepository.findByIdCreador(usuario.getIdUsuario());
-        model.addAttribute("listaEventos", listaEventos);
-        return "inicio";
+
+        return "redirect:/creador";
     }
 
     @GetMapping("/editarEvento/{id}")
     public String doEditarEvento(@PathVariable("id")Integer id, Model model){
-        Optional<Evento> evento = this.eventoRepository.findById(id);
+        Optional<Evento> evento = this.eventoService.buscarEventoId(id);
         Evento eventoAux = evento.get();
         model.addAttribute("evento",eventoAux);
         return "crearEditarEvento";
+    }
+
+    @PostMapping("/filtroEventos")
+    public String doFiltrar (@RequestParam("filtroTitulo") String filtroTitulo,
+                             @RequestParam("filtroDescripcion") String filtroDescripcion,
+                             @RequestParam("filtroPrecioMin") String filtroPrecioMin,
+                             @RequestParam("filtroPrecioMax") String filtroPrecioMax,
+                             Model model, HttpSession session) {
+
+        Usuario user = (Usuario)session.getAttribute("usuario");
+        List<Evento> listaEventos=null;
+
+        model.addAttribute("filtroTitulo", filtroTitulo);
+        model.addAttribute("filtroDescripcion", filtroDescripcion);
+        model.addAttribute("filtroPrecioMin", filtroPrecioMin);
+        model.addAttribute("filtroPrecioMax", filtroPrecioMax);
+        if( (filtroTitulo!=null && filtroTitulo.length()>0) || (filtroDescripcion!=null && filtroDescripcion.length()>0) ||
+                (filtroPrecioMin!=null && filtroPrecioMin.length()>0) || (filtroPrecioMax!=null && filtroPrecioMax.length()>0) ){
+            if(filtroPrecioMin!=null && filtroPrecioMax!=null && filtroPrecioMin.length()>0 && filtroPrecioMax.length()>0 &&
+                    Integer.parseInt(filtroPrecioMin) > Integer.parseInt(filtroPrecioMax)){
+                boolean error = true;
+                model.addAttribute("error", error);
+                listaEventos = this.eventoService.buscarEventoIdCreador(user.getIdUsuario());
+            }else{
+                listaEventos = this.eventoService.filtroEventos(user, filtroTitulo, filtroDescripcion, filtroPrecioMin, filtroPrecioMax);
+            }
+
+        }else{
+            listaEventos = this.eventoService.buscarEventoIdCreador(user.getIdUsuario());
+        }
+        model.addAttribute("listaEventos", listaEventos);
+        return "inicio";
     }
 }

@@ -78,13 +78,13 @@
                 <%
                     }
                 %>
-        <form action="ServletFiltroEventos">
+        <form method="post" action="/filtroEventos">
             Título <input type="text" name="filtroTitulo" value="<%=strfiltroTitulo%>" />
             Descripción: <input type="text" name="filtroDescripcion" value="<%=strfiltroDescripcion%>"/>
             Precio min.: <input type="text" name="filtroPrecioMin" value="<%=strfiltroPrecioMin%>"/>
             Precio max.: <input type="text" name="filtroPrecioMax" value="<%=strfiltroPrecioMax%>"/>
             <input type="submit" value="Filtrar" />
-            <a href="ServletFiltroEventos?des=1">Deshacer filtro</a>
+            <a href="/creador">Deshacer filtro</a>
         </form>
         <table border="1">
             <tr>
