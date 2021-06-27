@@ -84,7 +84,7 @@
             Precio min.: <input type="text" name="filtroPrecioMin" value="<%=strfiltroPrecioMin%>"/>
             Precio max.: <input type="text" name="filtroPrecioMax" value="<%=strfiltroPrecioMax%>"/>
             <input type="submit" value="Filtrar" />
-            <a href="/creador">Deshacer filtro</a>
+            <a href="/creador">Deshacer filtro</a><br/><br/>
         </form>
         <table border="1">
             <tr>
@@ -136,11 +136,6 @@
         </table>
         <%
                 }
-            if(user.getRolesByRol().getIdRol() == 2){
-            %>
-        <a href="ServletAdminMostrarUsuarios" style="margin:20px auto; text-align:center; display:block; width:120px;" class="button large hpbottom">Pagina de Admin</a>
-        <%
-            }
         }
         %>
     </body>
