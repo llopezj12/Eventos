@@ -75,7 +75,7 @@
     <br>
     <div>Estás registrado como <%=user.getRolesByRol().getDescripcion()%>.</div>
     <%
-        if(user.getRolesByRol().getIdRol() != 2){
+        if(user.getRolesByRol().getIdRol() != 2 && user.getRolesByRol().getIdRol() != 4){
 
     %>
     <div>Contacta con un teleoperador para cambiar tus datos.</div>
