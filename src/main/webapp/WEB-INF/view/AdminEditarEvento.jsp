@@ -17,6 +17,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
+    <ul>
+        <li><a href="/">Eventos disponibles</a></li>
+        <li><a href="/conversaciones">Ticket de ayuda</a></li>
+        <li><a href="/adminlistar" class="active" >Panel de Admin</a></li>
+        <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
+    </ul>
     <%
         Evento e = (Evento)request.getAttribute("evento");
         List<Usuario> listaU = (List)request.getAttribute("lista");
@@ -58,7 +64,7 @@
               <input type="text" id="nfilas" name="nfilas" value="<%= e.getNumfilas() %>"></br>
               <label for="asifil">Num Asientos por Fila</label>
               <input type="text" id="asifil" name="asifil" value="<%= e.getNumasientosporfila() %>"></br>
-                  <label for="idcre">ID Creador</label>
+                  <label for="idcre">Creador</label>
                   <select id="idcre" name="idcre"></br>
                       <%
                           for(Usuario u : listaU){

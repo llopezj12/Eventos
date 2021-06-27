@@ -17,6 +17,12 @@
         <title>EvenTAW - Crear Evento</title>
     </head>
     <body>
+    <ul>
+        <li><a href="/">Eventos disponibles</a></li>
+        <li><a href="/conversaciones">Ticket de ayuda</a></li>
+        <li><a href="/adminlistar" class="active" >Panel de Admin</a></li>
+        <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
+    </ul>
         <%
             Boolean error = (Boolean)request.getAttribute("error");
             List<Usuario> listaU = (List)request.getAttribute("lista");
@@ -52,7 +58,7 @@
               <input type="text" id="nfilas" name="nfilas"></br>
               <label for="asifil">Num Asientos por Fila</label>
               <input type="text" id="asifil" name="asifil"></br>
-              <label for="idcre">ID Creador</label>
+              <label for="idcre">Creador</label>
               <select id="idcre" name="idcre"></br>
                   <%
                       for(Usuario u : listaU){

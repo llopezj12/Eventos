@@ -20,6 +20,12 @@
         Usuario u = (Usuario)request.getAttribute("usuario");
     %>
     <body>
+    <ul>
+        <li><a href="/">Eventos disponibles</a></li>
+        <li><a href="/conversaciones">Ticket de ayuda</a></li>
+        <li><a href="/adminlistar" class="active" >Panel de Admin</a></li>
+        <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
+    </ul>
         <h1>Editar usuario(ID = <%= u.getIdUsuario() %>) </h1>
         <div class="form">
               <form method="post" action="/guardarUsuario">

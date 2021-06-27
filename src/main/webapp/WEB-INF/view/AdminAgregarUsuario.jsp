@@ -18,6 +18,12 @@
         <title>EvenTAW - Crear Usuario</title>
     </head>
     <body>
+    <ul>
+        <li><a href="/">Eventos disponibles</a></li>
+        <li><a href="/conversaciones">Ticket de ayuda</a></li>
+        <li><a href="/adminlistar" class="active" >Panel de Admin</a></li>
+        <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
+    </ul>
         <%
             Usuario u = (Usuario)request.getAttribute("usuario");
             Boolean error = (Boolean)request.getAttribute("error");

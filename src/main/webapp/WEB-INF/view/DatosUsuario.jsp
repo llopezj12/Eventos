@@ -51,6 +51,14 @@
 <ul>
     <li><a href="/">Eventos disponibles</a></li>
     <li><a href="/conversaciones">Ticket de ayuda</a></li>
+    <%
+        if(user.getRolesByRol().getIdRol() == 2){
+
+    %>
+        <li><a href="/adminlistar">Panel de Admin</a></li>
+    <%
+        }
+    %>
     <li style="float:right"><a href="/datosusuario" class="active">Mis datos</a></li>
 </ul>
 <h1 style="margin-top: 75px; margin-left: 270px">Datos del perfil</h1>
@@ -65,7 +73,14 @@
     <div>Domicilio: <%=user.getDomicilio()%></div>
     <br>
     <div>Estás registrado como <%=user.getRolesByRol().getDescripcion()%>.</div>
+    <%
+        if(user.getRolesByRol().getIdRol() != 2){
+
+    %>
     <div>Contacta con un admin para cambiar tu E-mail.</div>
+    <%
+        }
+    %>
     <br>
 </div>
 <div></div>
