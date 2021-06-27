@@ -154,7 +154,7 @@
                         <table border="1" class="customTable table100" style="margin-left: 340px">
                             <thead class="table100-head">
                                 <th>Título</th>
-                                <th>Descripción</th>
+                                <th style="width: 30%">Descripción</th>
                                 <th>Coste</th>
                                 <th>Aforo</th>
                                 <th>Asientos Fijos</th>
@@ -187,7 +187,7 @@
                         <table border="1" class="customTable table100" style="margin-left: 340px; margin-bottom: 50px">
                             <thead class="table100-head">
                                 <th>Título</th>
-                                <th>Descripción</th>
+                                <th style="width: 30%">Descripción</th>
                                 <th>Coste</th>
                                 <th>Aforo</th>
                                 <th>Asientos Fijos</th>
