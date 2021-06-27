@@ -65,11 +65,30 @@
     <div>Domicilio: <%=user.getDomicilio()%></div>
     <br>
     <div>Estás registrado como <%=user.getRolesByRol().getDescripcion()%>.</div>
-    <div>Contacta con un admin para cambiar tu E-mail.</div>
+    <div>Contacta con un admin para cambiar tus datos.</div>
     <br>
 </div>
 <div></div>
     <h1 style="margin-left: 270px">Eventos en los que te has inscrito</h1>
+    <form class="form-inline" action="/datosusuario" style="margin-left: 320px; margin-bottom: 20px">
+        <label for="clave">Palabra clave</label>
+        <input size="24" type="text" id="clave" placeholder="Busca por título o descripción" name="clave" <% if (request.getAttribute("clave") != null) { %>value="<%=request.getAttribute("clave")%>"<% } %>>
+
+        <label for="precio">Precio máx.</label>
+        <input size="1" type="text" id="precio" name="precio" <% if (request.getAttribute("precio") != null) { %>value="<%=request.getAttribute("precio")%>"<% } %>>
+
+        <label for="aforo">Aforo máx.</label>
+        <input size="1" type="text" id="aforo" name="aforo" <% if (request.getAttribute("aforo") != null) { %>value="<%=request.getAttribute("aforo")%>"<% } %>>
+
+        <label for="fecha1">Fecha</label>
+        <input type="date" id="fecha1" name="fecha1" <% if (request.getAttribute("fecha1") != null) { %>value="<%=request.getAttribute("fecha1")%>"<% } %>>
+        <input type="date" id="fecha2" name="fecha2" <% if (request.getAttribute("fecha2") != null) { %>value="<%=request.getAttribute("fecha2")%>"<% } %>>
+
+        <label for="invertir">Invertir orden</label>
+        <input type="checkbox" id="invertir" name="invertir" <% if (request.getAttribute("invertir") != null) { %>checked<% } %>>
+
+        <button type="submit">Buscar</button>
+    </form>
         <% if (inscritos.isEmpty()) { %>
             <h3 style="margin-left: 300px">No te has inscrito a ningún evento.</h3>
         <% } else { %>

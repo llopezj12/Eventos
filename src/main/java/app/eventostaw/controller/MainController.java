@@ -8,6 +8,7 @@ import app.eventostaw.entity.Evento;
 import app.eventostaw.entity.Roles;
 import app.eventostaw.entity.Usuario;
 import app.eventostaw.entity.UsuarioInscrito;
+import app.eventostaw.util.ComparadorEventoFechaRes;
 import app.eventostaw.util.Consulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,9 +38,10 @@ public class MainController {
     private RolesRepository rolesRepository;
 
     @GetMapping("/")
-    public String doInit (@RequestParam(required=false) String clave, @RequestParam(required=false) String precio, @RequestParam(required=false) String aforo, Model model, HttpSession session) {
+    public String doInit (@RequestParam(required=false) String invertir, @RequestParam(required=false) String fecha1, @RequestParam(required=false) String fecha2,@RequestParam(required=false) String clave, @RequestParam(required=false) String precio, @RequestParam(required=false) String aforo, Model model, HttpSession session) {
         List<Evento> eventosList = new ArrayList<>();
         Usuario user = (Usuario)session.getAttribute("usuario");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         float precioF = -1;
         float aforoF = -1;
         try {
@@ -82,11 +84,39 @@ public class MainController {
             float finalAforoF = aforoF;
             eventosList.removeIf(evento -> evento.getAforo()> finalAforoF);
         }
+
+        if (fecha1 != null && !fecha1.isEmpty()) {
+            try {
+                Date fecha = df.parse(fecha1);
+                eventosList.removeIf(evento -> fecha.after(evento.getFecha()));
+            } catch (Exception e) {
+
+            }
+        }
+
+        if (fecha2 != null && !fecha2.isEmpty()) {
+            try {
+                Date fecha = df.parse(fecha2);
+                eventosList.removeIf(evento -> fecha.before(evento.getFecha()));
+            } catch (Exception e) {
+
+            }
+        }
+        if (invertir == null) {
+            eventosList.sort(new ComparadorEventoFechaRes());
+        } else {
+            eventosList.sort(new ComparadorEventoFechaRes().reversed());
+        }
+
+
         model.addAttribute("eventosList", eventosList);
         model.addAttribute("inscritos", inscritos);
         model.addAttribute("clave", clave);
         model.addAttribute("precio", precio);
         model.addAttribute("aforo", aforo);
+        model.addAttribute("fecha1", fecha1);
+        model.addAttribute("fecha2", fecha2);
+        model.addAttribute("invertir", invertir);
 
         return "home";
     }

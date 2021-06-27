@@ -6,6 +6,7 @@ import app.eventostaw.entity.Evento;
 import app.eventostaw.entity.Usuario;
 import app.eventostaw.entity.UsuarioInscrito;
 import app.eventostaw.entity.UsuarioInscritoPK;
+import app.eventostaw.util.ComparadorEventoFechaRes;
 import app.eventostaw.util.Consulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,9 +50,22 @@ public class UsuarioController {
     }
 
     @GetMapping("/datosusuario")
-    public String DatosUsuario(Model model, HttpSession session) {
+    public String DatosUsuario(@RequestParam(required=false) String invertir, @RequestParam(required=false) String fecha1, @RequestParam(required=false) String fecha2,@RequestParam(required=false) String clave, @RequestParam(required=false) String precio, @RequestParam(required=false) String aforo, Model model, HttpSession session) {
         Usuario user = (Usuario)session.getAttribute("usuario");
         List<Evento> listaInscritos = new ArrayList<>();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        float precioF = -1;
+        float aforoF = -1;
+        try {
+            precioF = Float.parseFloat(precio);
+        } catch (Exception e) {
+
+        }
+        try {
+            aforoF = Float.parseFloat(aforo);
+        } catch (Exception e) {
+
+        }
         if (user != null) {
             try {
                 List<UsuarioInscrito> listaUsuarioInscritos = usuarioInscritoRepository.findAllUsuarioInscritoByIdUsuario(user.getIdUsuario());
@@ -60,7 +76,47 @@ public class UsuarioController {
 
             }
         }
+        if (clave != null && !clave.isEmpty()) {
+            listaInscritos.removeIf(evento -> !Consulta.buscarClave(evento, clave));
+        }
+        if (precio != null && !precio.isEmpty() && precioF >= 0) {
+            float finalPrecioF = precioF;
+            listaInscritos.removeIf(evento -> evento.getCoste()> finalPrecioF);
+        }
+        if (aforo != null && !aforo.isEmpty() && aforoF >= 0) {
+            float finalAforoF = aforoF;
+            listaInscritos.removeIf(evento -> evento.getAforo()> finalAforoF);
+        }
+
+        if (fecha1 != null && !fecha1.isEmpty()) {
+            try {
+                Date fecha = df.parse(fecha1);
+                listaInscritos.removeIf(evento -> fecha.after(evento.getFecha()));
+            } catch (Exception e) {
+
+            }
+        }
+
+        if (fecha2 != null && !fecha2.isEmpty()) {
+            try {
+                Date fecha = df.parse(fecha2);
+                listaInscritos.removeIf(evento -> fecha.before(evento.getFecha()));
+            } catch (Exception e) {
+
+            }
+        }
+        if (invertir == null) {
+            listaInscritos.sort(new ComparadorEventoFechaRes());
+        } else {
+            listaInscritos.sort(new ComparadorEventoFechaRes().reversed());
+        }
         model.addAttribute("listaInscritos", listaInscritos);
+        model.addAttribute("clave", clave);
+        model.addAttribute("precio", precio);
+        model.addAttribute("aforo", aforo);
+        model.addAttribute("fecha1", fecha1);
+        model.addAttribute("fecha2", fecha2);
+        model.addAttribute("invertir", invertir);
 
         return "DatosUsuario";
     }
