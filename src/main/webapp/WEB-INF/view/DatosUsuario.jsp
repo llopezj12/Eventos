@@ -114,32 +114,32 @@
                 <% } else { %>
                     <h4 style="margin-left: 340px">Mientras el evento este abierto, tienes hasta la fecha límite para anularlo.</h4>
                         <div class="table100">
-                            <table border="1" class="customTable table100" style="margin-left: 340px">
+                            <table class="customTable table100" style="margin-left: 340px">
                                 <thead class="table100-head">
-                                    <th>Título</th>
-                                    <th style="width: 30%">Descripción</th>
-                                    <th>Coste</th>
-                                    <th>Aforo</th>
-                                    <th>Asientos Fijos</th>
-                                    <th>Fecha límite de reserva</th>
-                                    <th>Fecha del evento</th>
-                                    <th>Entradas disponibles</th>
+                                    <th class="c">Título</th>
+                                    <th class="c" style="width: 30%">Descripción</th>
+                                    <th class="c">Coste</th>
+                                    <th class="c">Aforo</th>
+                                    <th class="c">Asientos Fijos</th>
+                                    <th class="c">Fecha límite de reserva</th>
+                                    <th class="c">Fecha del evento</th>
+                                    <th class="c">Entradas disponibles</th>
                                     <th></th>
                                 </thead>
                                     <% for (Evento e: abiertos) { %>
                                         <tr>
-                                            <td><%=e.getTitulo()%></td>
-                                            <td><%=e.getDescripcion()%></td>
-                                            <td><%=e.getCoste()%></td>
-                                            <td><%=e.getAforo()%></td>
+                                            <td class="c"><%=e.getTitulo()%></td>
+                                            <td class="c"><%=e.getDescripcion()%></td>
+                                            <td class="c"><%=e.getCoste()%></td>
+                                            <td class="c"><%=e.getAforo()%></td>
                                             <% if (e.getAsientosfijos().compareTo("S") == 0) { %>
-                                                <td><%=e.getNumasientosporfila()%> x <%=e.getNumfilas()%> filas</td>
+                                                <td class="c"><%=e.getNumasientosporfila()%> x <%=e.getNumfilas()%> filas</td>
                                             <% } else { %>
-                                                <td>-</td>
+                                                <td class="c">-</td>
                                             <% } %>
-                                            <td><%=df2.format(e.getFechares())%></td>
-                                            <td><%=df2.format(e.getFecha())%></td>
-                                            <td><%=e.getEntradas()%></td>
+                                            <td class="c"><%=df2.format(e.getFechares())%></td>
+                                            <td class="c"><%=df2.format(e.getFecha())%></td>
+                                            <td class="c"><%=e.getEntradas()%></td>
                                             <td><a href="/QuitarEventoD?idEvento=<%=e.getIdEvento()%>" style="color: red">Anular</a></td>
                                         </tr>
                                     <% } %>
@@ -151,29 +151,29 @@
                     <h4 style="margin-left: 340px">No tienes ningún evento ya reservado.</h4>
                 <% } else { %>
                     <div class="table100">
-                        <table border="1" class="customTable table100" style="margin-left: 340px">
+                        <table class="customTable table100" style="margin-left: 340px">
                             <thead class="table100-head">
-                                <th>Título</th>
-                                <th style="width: 30%">Descripción</th>
-                                <th>Coste</th>
-                                <th>Aforo</th>
-                                <th>Asientos Fijos</th>
-                                <th>Fecha límite de reserva</th>
-                                <th>Fecha del evento</th>
+                                <th class="c">Título</th>
+                                <th class="c" style="width: 30%">Descripción</th>
+                                <th class="c">Coste</th>
+                                <th class="c">Aforo</th>
+                                <th class="c">Asientos Fijos</th>
+                                <th class="c">Fecha límite de reserva</th>
+                                <th class="c">Fecha del evento</th>
                             </thead>
                                 <% for (Evento e: reservados) { %>
                                     <tr>
-                                        <td><%=e.getTitulo()%></td>
-                                        <td><%=e.getDescripcion()%></td>
-                                        <td><%=e.getCoste()%></td>
-                                        <td><%=e.getAforo()%></td>
+                                        <td class="c"><%=e.getTitulo()%></td>
+                                        <td class="c"><%=e.getDescripcion()%></td>
+                                        <td class="c"><%=e.getCoste()%></td>
+                                        <td class="c"><%=e.getAforo()%></td>
                                             <% if (e.getAsientosfijos().compareTo("S") == 0) { %>
-                                            <td><%=e.getNumasientosporfila()%> x <%=e.getNumfilas()%> filas</td>
+                                            <td class="c"><%=e.getNumasientosporfila()%> x <%=e.getNumfilas()%> filas</td>
                                             <% } else { %>
-                                            <td>-</td>
+                                            <td class="c">-</td>
                                             <% } %>
-                                        <td><%=df2.format(e.getFechares())%></td>
-                                        <td><%=df2.format(e.getFecha())%></td>
+                                        <td class="c"><%=df2.format(e.getFechares())%></td>
+                                        <td class="c"><%=df2.format(e.getFecha())%></td>
                                     </tr>
                                 <% } %>
                         </table>
@@ -184,27 +184,27 @@
                     <h4 style="margin-left: 340px">No tienes ningún evento anterior.</h4>
                 <% } else { %>
                     <div class="table100">
-                        <table border="1" class="customTable table100" style="margin-left: 340px; margin-bottom: 50px">
+                        <table class="customTable table100" style="margin-left: 340px; margin-bottom: 50px">
                             <thead class="table100-head">
-                                <th>Título</th>
-                                <th style="width: 30%">Descripción</th>
-                                <th>Coste</th>
-                                <th>Aforo</th>
-                                <th>Asientos Fijos</th>
-                                <th>Fecha del evento</th>
+                                <th class="c">Título</th>
+                                <th class="c" style="width: 30%">Descripción</th>
+                                <th class="c">Coste</th>
+                                <th class="c">Aforo</th>
+                                <th class="c">Asientos Fijos</th>
+                                <th class="c">Fecha del evento</th>
                             </thead>
                             <% for (Evento e: historial) { %>
                             <tr>
-                                <td><%=e.getTitulo()%></td>
-                                <td><%=e.getDescripcion()%></td>
-                                <td><%=e.getCoste()%></td>
-                                <td><%=e.getAforo()%></td>
+                                <td class="c"><%=e.getTitulo()%></td>
+                                <td class="c"><%=e.getDescripcion()%></td>
+                                <td class="c"><%=e.getCoste()%></td>
+                                <td class="c"><%=e.getAforo()%></td>
                                 <% if (e.getAsientosfijos().compareTo("S") == 0) { %>
-                                <td><%=e.getNumasientosporfila()%> x <%=e.getNumfilas()%> filas</td>
+                                <td class="c"><%=e.getNumasientosporfila()%> x <%=e.getNumfilas()%> filas</td>
                                 <% } else { %>
-                                <td>-</td>
+                                <td class="c">-</td>
                                 <% } %>
-                                <td><%=df2.format(e.getFecha())%></td>
+                                <td class="c"><%=df2.format(e.getFecha())%></td>
                             </tr>
                             <% } %>
                         </table>
