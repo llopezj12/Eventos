@@ -50,7 +50,18 @@
 %>
 <body>
 <ul>
+    <%
+    if(user.getRolesByRol().getIdRol() ==1){
+    %>
+    <li><a href="/creador">Inicio</a></li>
+    <%
+        }else{
+    %>
     <li><a href="/">Eventos disponibles</a></li>
+    <%
+        }
+    %>
+
     <li><a href="/conversaciones">Ticket de ayuda</a></li>
     <%
         if(user.getRolesByRol().getIdRol() == 2){
