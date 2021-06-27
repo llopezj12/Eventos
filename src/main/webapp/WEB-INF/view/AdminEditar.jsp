@@ -9,8 +9,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="css/estilo.css">
-        <link rel="stylesheet" href="css/estiloregistro.css">
+        <link rel="stylesheet" href="/css/estilo.css">
+        <link rel="stylesheet" href="/css/estiloregistro.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,6 +20,12 @@
         Usuario u = (Usuario)request.getAttribute("usuario");
     %>
     <body>
+    <ul>
+        <li><a href="/">Eventos disponibles</a></li>
+        <li><a href="/conversaciones">Ticket de ayuda</a></li>
+        <li><a href="/adminlistar" class="active" >Panel de Admin</a></li>
+        <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
+    </ul>
         <h1>Editar usuario(ID = <%= u.getIdUsuario() %>) </h1>
         <div class="form">
               <form method="post" action="/guardarUsuario">

@@ -20,8 +20,14 @@
     <title>EvenTAW - LIstar</title>
 </head>
 <body>
-<div style="float: left;margin-right: 10px;margin-top: 15px">
-<form action="ServletAdminMostrarUsuarios">
+<ul>
+    <li><a href="/">Eventos disponibles</a></li>
+    <li><a href="/conversaciones">Ticket de ayuda</a></li>
+    <li><a href="/adminlistar" class="active" >Panel de Admin</a></li>
+    <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
+</ul>
+<div style="float: left;margin-right: 20px;margin-top: 70px; margin-left: 250px" >
+<form method="post" action="/filtrarUsuarios">
     <%
         String b = (String)request.getAttribute("busqueda");
         List<Usuario> listaFiltrada = (List)request.getAttribute("lista");
@@ -40,6 +46,7 @@
     <th>NOMBRE</th>
     <th>APELLIDOS</th>
     <th>CORREO</th>
+    <th>ROL</th>
     <th>EDITAR</th>
     <th>ELIMINAR</th>
     </tr>
@@ -53,17 +60,19 @@
         <td><%= u.getNombre()  %></td>
         <td><%= u.getApellidos()  %></td>
         <td><%= u.getEmail() %></td>
+        <td><%=u.getRolesByRol().getDescripcion()%></td>
         <td><a href="/editarUsuario/<%=u.getIdUsuario()%>">Editar</a></td>
         <td><a href="/adminEliminarUsuario/<%=u.getIdUsuario()%>">Eliminar</a></td>
     </tr>
     <% } %>
     </thead>
 </table>
+<br>
 <a href="/redireccionarAgregarUsuario">Añadir usuario</a>
 </div>
-
-<div style="float: left;margin-top: 2px" >
-<form action="ServletAdminMostrarUsuarios">
+<br>
+<div style="float: left;margin-top: 39px" >
+<form method="post" action="/filtrarEventos">
     <%
 
         String bEvento = (String)request.getAttribute("busquedaEvento");
@@ -105,7 +114,8 @@
     <% } %>
     </thead>
 </table>
-<a href="AdminAgregarEvento">Añadir evento</a>
+    <br>
+<a href="/redireccionarAgregarEvento">Añadir evento</a>
 </div>
 </body>
 </html>

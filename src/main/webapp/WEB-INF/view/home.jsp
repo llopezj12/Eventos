@@ -36,6 +36,11 @@
   <% } %>
   <% if (user != null) { %>
   <li><a href="/conversaciones">Ticket de ayuda</a></li>
+  <%
+      if(user.getRolesByRol().getIdRol() == 2){
+  %>
+    <li><a href="/adminlistar">Panel de Admin</a></li>
+  <% } %>
   <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
   <% } %>
 </ul>

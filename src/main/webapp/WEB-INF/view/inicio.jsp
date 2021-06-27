@@ -14,24 +14,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>EvenTAW - Inicio</title>        
-        <link rel="stylesheet" href="css/estilo.css">
-        <link rel="stylesheet" href="css/estiloregistro.css">
+        <link rel="stylesheet" href="/css/estilo.css">
+        <link rel="stylesheet" href="/css/estiloregistro.css">
     </head>
     <%  
-      Usuario user = (Usuario)session.getAttribute("usuario");      
+      Usuario user = (Usuario)session.getAttribute("usuario");
     %>
     <body>
-        <ul>
-            <li><a class="active" href="inicio.jsp">Inicio</a></li>
-            <% if (user == null) { %>
-            <li><a href="login.jsp">Identificarse</a></li>
-            <li><a href="registro.jsp">Registro</a></li>
-            <% } %>
-            <% if (user != null) { %>
-            <li><a href="/conversaciones">Ticket de ayuda</a></li>
-            <!--<li style="float:right"><a href="about.asp">Mi cuenta</a></li>-->
-            <% } %>
-        </ul>
+    <ul>
+        <li><a class="active" href="/creador">Inicio</a></li>
+        <% if (user == null) { %>
+        <li><a href="/login">Identificarse</a></li>
+        <li><a href="/registro">Registro</a></li>
+        <% } %>
+        <% if (user != null) { %>
+        <li><a href="/conversaciones">Ticket de ayuda</a></li>
+        <li style="float:right"><a href="/cerrarsesion">Cerrar Sesión</a></li>
+        <% } %>
+    </ul>
         <%
             if (user == null) { 
         %>
@@ -43,12 +43,13 @@
         %>
         <h1>¡Bienvenido, <%=nombreCompleto%>!</h1><br/>
         <%
-                if(user.getRol()==1){//Creador de eventos
-                List<Evento> listaEventos = (List)session.getAttribute("listaEventos");
+                if(user.getRolesByRol().getIdRol()==1){//Creador de eventos
+                List<Evento> listaEventos = (List)request.getAttribute("listaEventos");
+
         %>
 
         <h2>Estos son tus eventos creados: </h2>
-        <form action="ServletCrearEvento">
+        <form action="/nuevoEvento">
             <input type="submit" value="Añadir nuevo" />
         </form><br/>
         <h3>Filtro de búsqueda</h3>
@@ -77,13 +78,13 @@
                 <%
                     }
                 %>
-        <form action="ServletFiltroEventos">
+        <form method="post" action="/filtroEventos">
             Título <input type="text" name="filtroTitulo" value="<%=strfiltroTitulo%>" />
             Descripción: <input type="text" name="filtroDescripcion" value="<%=strfiltroDescripcion%>"/>
             Precio min.: <input type="text" name="filtroPrecioMin" value="<%=strfiltroPrecioMin%>"/>
             Precio max.: <input type="text" name="filtroPrecioMax" value="<%=strfiltroPrecioMax%>"/>
             <input type="submit" value="Filtrar" />
-            <a href="ServletFiltroEventos?des=1">Deshacer filtro</a>
+            <a href="/creador">Deshacer filtro</a>
         </form>
         <table border="1">
             <tr>
@@ -104,6 +105,15 @@
                   SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                   String strFecha = df.format(evento.getFecha());
                   String strFechares = df.format(evento.getFechares());
+                  String numFilas="-";
+                  String asientosFila="-";
+                  if(evento.getNumfilas()!=null){
+                      numFilas = String.valueOf(evento.getNumfilas());
+                  }
+                  if(evento.getNumasientosporfila()!=null){
+                      asientosFila = String.valueOf(evento.getNumasientosporfila());
+                  }
+
             %>
             <tr>
                 <td><%=evento.getIdEvento() %> </td>
@@ -115,10 +125,10 @@
                 <td><%=evento.getAforo() %> </td>
                 <td><%=evento.getEntradas() %> </td>
                 <td><%=evento.getAsientosfijos() %> </td>
-                <td><%=evento.getNumfilas() %> </td>
-                <td><%=evento.getNumasientosporfila() %> </td>
-                <td><a href="ServletBorrarEvento?id=<%= evento.getIdEvento() %>">Borrar</a></td>
-                <td><a href="ServletEditarEvento?id=<%= evento.getIdEvento() %>">Editar</a></td>  
+                <td><%=numFilas %> </td>
+                <td><%=asientosFila%> </td>
+                <td><a href="eliminarEvento/<%= evento.getIdEvento() %>">Borrar</a></td>
+                <td><a href="editarEvento/<%= evento.getIdEvento() %>">Editar</a></td>
             </tr>
             <%
                }
@@ -126,7 +136,7 @@
         </table>
         <%
                 }
-            if(user.getRol().getIdRol() == 2){
+            if(user.getRolesByRol().getIdRol() == 2){
             %>
         <a href="ServletAdminMostrarUsuarios" style="margin:20px auto; text-align:center; display:block; width:120px;" class="button large hpbottom">Pagina de Admin</a>
         <%

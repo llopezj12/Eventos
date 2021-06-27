@@ -258,6 +258,11 @@ public class MainController {
         }
         if (!error && user != null && user.getPassword().equals(strpwd)) {
             session.setAttribute("usuario", user);
+            if(user.getRolesByRol().getIdRol()==1){//Creador de eventos
+                res = "inicio";
+                List<Evento> listaEventos = this.eventoRepository.findByIdCreador(user.getIdUsuario());
+                model.addAttribute("listaEventos", listaEventos);
+            }
         } else if (!error) {
             error = true;
             errorMsg = "Email o Contraseña invalido";

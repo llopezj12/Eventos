@@ -1,4 +1,5 @@
-<%-- 
+<%@ page import="app.eventostaw.entity.Usuario" %>
+<%@ page import="java.util.List" %><%--
     Document   : AdminAgregarEvento
     Created on : 16-may-2021, 10:52:34
     Author     : aaron
@@ -16,8 +17,15 @@
         <title>EvenTAW - Crear Evento</title>
     </head>
     <body>
+    <ul>
+        <li><a href="/">Eventos disponibles</a></li>
+        <li><a href="/conversaciones">Ticket de ayuda</a></li>
+        <li><a href="/adminlistar" class="active" >Panel de Admin</a></li>
+        <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
+    </ul>
         <%
             Boolean error = (Boolean)request.getAttribute("error");
+            List<Usuario> listaU = (List)request.getAttribute("lista");
             String errorMsg = "";
             if (error == null) {
                 error = false;
@@ -28,30 +36,39 @@
         %>
         <h1>Crear Evento</h1>
               <div class="form">
-              <form action="ServletAdminCrearEvento">
+              <form method="post" action="/crearEvento">
               <input type="hidden" id="idEvento" name="idEvento">
-              <label for="titu">Titulo</label>
+              <label for="titulo">Titulo</label>
               <input type="text" id="titulo" name="titulo" ></br>
-              <label for="fech">Fecha</label>
+              <label for="fechaRes">Fecha</label>
               <input type="date" id="date" name="date"></br>
-              <label for="ciu">Fecha Res</label>
+              <label for="fechaRes">Fecha Res</label>
               <input type="date" id="fechaRes" name="fechaRes"></br> 
-              <label for="cos">Coste</label>
+              <label for="coste">Coste</label>
               <input type="text" id="coste" name="coste"></br>
               <label for="asi">¿Asientos fijos?</label>
-              <input type="radio" id="asientos" name="asientos" value="S" >Si
-              <input type="radio" id="asientos" name="asientos" value="N" >No</br>
+              <input type="radio" id="asientos1" name="asientos" value="S" >Si
+              <input type="radio" id="asientos2" name="asientos" value="N" >No</br>
               <input type="hidden" id="asi" name="asi">
-              <label for="afo">Aforo</label>
+              <label for="aforo">Aforo</label>
               <input type="text" id="aforo" name="aforo"></br> 
-              <label for="ent">Entradas</label>
+              <label for="entradas">Entradas</label>
               <input type="text" id="entradas" name="entradas"></br>
-              <label for="nfil">Num Filas</label>
+              <label for="nfilas">Num Filas</label>
               <input type="text" id="nfilas" name="nfilas"></br>
               <label for="asifil">Num Asientos por Fila</label>
               <input type="text" id="asifil" name="asifil"></br>
-              <label for="idcre">ID Creador</label>
-              <input type="text" id="idcre" name="idcre"></br>
+              <label for="idcre">Creador</label>
+              <select id="idcre" name="idcre"></br>
+                  <%
+                      for(Usuario u : listaU){
+
+                  %>
+                  <option value="<%=u.getIdUsuario()%>"><%=u.getNombre() + " " + u.getApellidos()%></option>
+                  <%
+                      }
+                  %>
+              </select><br>
               <label for="desc">Descripcion</label>
               <input type="text" id="desc" name="desc"></br>
                 <%
