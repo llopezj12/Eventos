@@ -77,7 +77,7 @@
         if(user.getRolesByRol().getIdRol() != 2){
 
     %>
-    <div>Contacta con un admin para cambiar tu E-mail.</div>
+    <div>Contacta con un admin para cambiar tus datos.</div>
     <%
         }
     %>
