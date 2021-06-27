@@ -32,7 +32,7 @@
     <% } %>
     <% if (user != null) { %>
     <li><a class="active" href="/conversaciones">Ticket de ayuda</a></li>
-    <li style="float:right"><a href="/cerrarsesion">Cerrar Sesión</a></li>
+    <li style="float:right"><a href="/datosusuario">Mis datos</a></li>
     <% } %>
 </ul>
 

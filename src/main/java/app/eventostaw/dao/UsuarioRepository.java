@@ -22,4 +22,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             "or upper(u.email) LIKE CONCAT('%', upper(:busqueda), '%')" +
             "or upper(u.rolesByRol.descripcion)  LIKE CONCAT('%', upper(:busqueda) , '%')")
     List<Usuario> findByBusqueda(@Param("busqueda") String busqueda);
+
+    @Query("SELECT u FROM Usuario u ORDER BY u.idUsuario")
+    List<Usuario> findAllByIdOrdenado();
 }

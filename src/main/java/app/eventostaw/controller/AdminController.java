@@ -58,8 +58,8 @@ public class AdminController {
 
     @GetMapping("/adminlistar")
     public String listar(Model model, HttpSession session){
-        List<Evento> listaE = this.eventoRepository.findAll();
-        List<Usuario> listaU = this.usuarioRepository.findAll();
+        List<Evento> listaE = this.eventoRepository.findAllByIDOrdeando();
+        List<Usuario> listaU = this.usuarioRepository.findAllByIdOrdenado();
         model.addAttribute("listaE",listaE);
         model.addAttribute("lista",listaU);
         return "AdminListar";
@@ -72,7 +72,7 @@ public class AdminController {
             Usuario aux = u.get();
             List<Conversacion> listaC = (List<Conversacion>) aux.getConversacionsByIdUsuario();
             listaC.addAll(aux.getConversacionsByIdUsuario_0());
-            if(listaC != null){
+            if(listaC != null && !listaC.isEmpty()){
                 List<Mensaje> listaM = new ArrayList<Mensaje>();
                 for(Conversacion c : listaC){
                     listaM.addAll(c.getMensajesByIdConversacion());
@@ -83,9 +83,25 @@ public class AdminController {
                 }
             }
             List<UsuarioInscrito> listaUI = this.usuarioInscritoRepository.findAll();
-            for(UsuarioInscrito ui : listaUI){
-                if(ui.getIdUsuario() == aux.getIdUsuario()){
-                    this.usuarioInscritoRepository.delete(ui);
+            if(listaUI != null || !listaUI.isEmpty()){
+                for(UsuarioInscrito ui : listaUI){
+                    if(ui.getIdUsuario() == aux.getIdUsuario()){
+                        this.usuarioInscritoRepository.delete(ui);
+                    }
+                }
+            }
+            if(aux.getRolesByRol().getIdRol() == 1){
+                List<Evento> listaE = this.eventoRepository.findByIdCreador(aux.getIdUsuario());
+                if(listaE != null && !listaE.isEmpty()){
+                    List<UsuarioInscrito> listaUI2 = this.usuarioInscritoRepository.findAll();
+                    if(listaUI2 != null && !listaUI2.isEmpty()){
+                        for(UsuarioInscrito u2 : listaUI2){
+                            this.usuarioInscritoRepository.delete(u2);
+                        }
+                    }
+                    for(Evento e2 : listaE){
+                        this.eventoRepository.delete(e2);
+                    }
                 }
             }
             this.usuarioRepository.delete(aux);
@@ -98,6 +114,14 @@ public class AdminController {
         Optional<Evento> e = this.eventoRepository.findById(id);
         if(e.isPresent()){
             Evento aux = e.get();
+            List<UsuarioInscrito> listaUIns = this.usuarioInscritoRepository.findAll();
+            if(listaUIns != null && !listaUIns.isEmpty()){
+                for(UsuarioInscrito usr : listaUIns){
+                    if(usr.getIdEvento() == aux.getIdEvento()){
+                        this.usuarioInscritoRepository.delete(usr);
+                    }
+                }
+            }
             this.eventoRepository.delete(aux);
         }
         return "redirect:/adminlistar";

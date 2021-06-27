@@ -30,4 +30,7 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
 
     @Query("SELECT e FROM Evento e WHERE e.titulo LIKE CONCAT('%', :filtroTitulo , '%')")
     public List<Evento> findBySimilarTitulo(String filtroTitulo);
+
+    @Query("SELECT e FROM Evento e ORDER BY e.idEvento")
+    public List<Evento> findAllByIDOrdeando();
 }
