@@ -38,7 +38,7 @@
 <div class="wrap-table100" style="margin: auto">
 
     <div class="table100">
-        <table border="1" class="table">
+        <table class="table">
             <thead>
             <tr class="table100-head">
                 <th>Usuario</th>
