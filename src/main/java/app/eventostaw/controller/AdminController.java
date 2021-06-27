@@ -1,12 +1,7 @@
 package app.eventostaw.controller;
 
-import app.eventostaw.dao.EventoRepository;
-import app.eventostaw.dao.RolesRepository;
-import app.eventostaw.dao.UsuarioRepository;
-import app.eventostaw.entity.Conversacion;
-import app.eventostaw.entity.Evento;
-import app.eventostaw.entity.Roles;
-import app.eventostaw.entity.Usuario;
+import app.eventostaw.dao.*;
+import app.eventostaw.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +22,9 @@ public class AdminController {
     private RolesRepository rolesRepository;
     private UsuarioRepository usuarioRepository;
     private EventoRepository eventoRepository;
+    private MensajeRepository mensajeRepository;
+    private ConversacionRepository conversacionRepository;
+    private UsuarioInscritoRepository usuarioInscritoRepository;
 
     @Autowired
     public void setRolesRepository(RolesRepository rolesRepository){
@@ -42,6 +41,21 @@ public class AdminController {
         this.usuarioRepository = usuarioRepository;
     }
 
+    @Autowired
+    public void setMensajeRepository(MensajeRepository mensajeRepository){
+        this.mensajeRepository = mensajeRepository;
+    }
+
+    @Autowired
+    public void setConversacionRepository(ConversacionRepository conversacionRepository){
+        this.conversacionRepository = conversacionRepository;
+    }
+
+    @Autowired
+    public void setUsuarioInscritoRepository(UsuarioInscritoRepository usuarioInscritoRepository){
+        this.usuarioInscritoRepository = usuarioInscritoRepository;
+    }
+
     @GetMapping("/adminlistar")
     public String listar(Model model, HttpSession session){
         List<Evento> listaE = this.eventoRepository.findAll();
@@ -56,6 +70,24 @@ public class AdminController {
         Optional<Usuario> u = this.usuarioRepository.findById(id);
         if(u.isPresent()){
             Usuario aux = u.get();
+            List<Conversacion> listaC = (List<Conversacion>) aux.getConversacionsByIdUsuario();
+            listaC.addAll(aux.getConversacionsByIdUsuario_0());
+            if(listaC != null){
+                List<Mensaje> listaM = new ArrayList<Mensaje>();
+                for(Conversacion c : listaC){
+                    listaM.addAll(c.getMensajesByIdConversacion());
+                    for(Mensaje m : listaM){
+                        this.mensajeRepository.delete(m);
+                    }
+                    this.conversacionRepository.delete(c);
+                }
+            }
+            List<UsuarioInscrito> listaUI = this.usuarioInscritoRepository.findAll();
+            for(UsuarioInscrito ui : listaUI){
+                if(ui.getIdUsuario() == aux.getIdUsuario()){
+                    this.usuarioInscritoRepository.delete(ui);
+                }
+            }
             this.usuarioRepository.delete(aux);
         }
         return "redirect:/adminlistar";
