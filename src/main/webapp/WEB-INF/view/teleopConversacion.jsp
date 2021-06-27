@@ -13,16 +13,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="/css/estilo.css">
+        <link rel="stylesheet" href="/css/estiloconversacion.css">
     </head>
     <%
         Usuario user = (Usuario) session.getAttribute("usuario");
         Conversacion conv = (Conversacion) request.getAttribute("conversacion");
     %>    
     <body>
-        <table border="1" width="500">
+    <div class="wrap-table100" style="margin: auto">
+        <div class="table100">
+        <table width="500">
+            <thead>
+            <tr class="table100-head">
             <th><%=conv.getUsuarioByIdUsuario1().getNombre() %></th>
             <th><%=conv.getUsuarioByIdUsuario2().getNombre() %></th>
             <th>Hora</th>
+            </tr>
+            </thead>
                 <%
                     for (Mensaje m : conv.getMensajesByIdConversacion()) {
 
@@ -55,9 +63,10 @@
                     }
                 %>
         </table>
+        </div>
         
-        <form action="/conversaciones" >
-            <input type="submit" value="Ver Conversaciones">
+        <form class="form-inline" action="/conversaciones" >
+            <button type="submit">Ver Conversaciones</button>
         </form>
     </body>
 </html>
