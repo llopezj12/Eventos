@@ -175,46 +175,50 @@ public class ConversacionController {
         Usuario user = (Usuario) session.getAttribute("usuario");
         Conversacion conversacion = conversacionRepository.findByIdConversacion(conver);
 
-        Mensaje mensaje = new Mensaje();
-        Date date = new Date();
-        String hora = new SimpleDateFormat("HH").format(date);
-        String minuto = new SimpleDateFormat("mm").format(date);
-        mensaje.setFecha(new java.sql.Date(date.getTime()));
-        mensaje.setHora(new Integer(hora));
-        mensaje.setMinuto(new Integer(minuto));
-        mensaje.setConversacionByIdConversacion(conversacion);
-        mensaje.setUsuarioByIdUsuario(user);
-        mensaje.setMensaje(msg);
-
-        mensajeRepository.save(mensaje);
-        List<Mensaje> lista = (List<Mensaje>) conversacion.getMensajesByIdConversacion();
-        conversacion.setMensajesByIdConversacion(lista);
-        Usuario user1 = conversacion.getUsuarioByIdUsuario1();
-        Usuario user2 = conversacion.getUsuarioByIdUsuario2();
-        List<Conversacion> lista1 = (List<Conversacion>) user1.getConversacionsByIdUsuario();
-        List<Conversacion> lista2 = (List<Conversacion>) user2.getConversacionsByIdUsuario_0();
-
-        for (int i = 0; i <lista1.size(); i++)
+        if (msg != "")
         {
-            if (conversacion.equals(lista1.get(i)))
+            Mensaje mensaje = new Mensaje();
+            Date date = new Date();
+            String hora = new SimpleDateFormat("HH").format(date);
+            String minuto = new SimpleDateFormat("mm").format(date);
+            mensaje.setFecha(new java.sql.Date(date.getTime()));
+            mensaje.setHora(new Integer(hora));
+            mensaje.setMinuto(new Integer(minuto));
+            mensaje.setConversacionByIdConversacion(conversacion);
+            mensaje.setUsuarioByIdUsuario(user);
+            mensaje.setMensaje(msg);
+
+            mensajeRepository.save(mensaje);
+            List<Mensaje> lista = (List<Mensaje>) conversacion.getMensajesByIdConversacion();
+            conversacion.setMensajesByIdConversacion(lista);
+            Usuario user1 = conversacion.getUsuarioByIdUsuario1();
+            Usuario user2 = conversacion.getUsuarioByIdUsuario2();
+            List<Conversacion> lista1 = (List<Conversacion>) user1.getConversacionsByIdUsuario();
+            List<Conversacion> lista2 = (List<Conversacion>) user2.getConversacionsByIdUsuario_0();
+
+            for (int i = 0; i <lista1.size(); i++)
             {
-                lista1.set(i, conversacion);
+                if (conversacion.equals(lista1.get(i)))
+                {
+                    lista1.set(i, conversacion);
+                }
             }
+
+            for (int j = 0; j <lista2.size(); j++)
+            {
+                if (conversacion.equals(lista2.get(j)))
+                {
+                    lista2.set(j, conversacion);
+                }
+            }
+            user1.setConversacionsByIdUsuario(lista1);
+            user2.setConversacionsByIdUsuario_0(lista2);
+
+            usuarioRepository.save(user1);
+            usuarioRepository.save(user2);
+            conversacionRepository.save(conversacion);
         }
 
-        for (int j = 0; j <lista2.size(); j++)
-        {
-            if (conversacion.equals(lista2.get(j)))
-            {
-                lista2.set(j, conversacion);
-            }
-        }
-        user1.setConversacionsByIdUsuario(lista1);
-        user2.setConversacionsByIdUsuario_0(lista2);
-
-        usuarioRepository.save(user1);
-        usuarioRepository.save(user2);
-        conversacionRepository.save(conversacion);
 
         Usuario uff = (Usuario)session.getAttribute("usuario");
         Usuario usuariosesion = usuarioRepository.findByIdUsuario(uff.getIdUsuario());
